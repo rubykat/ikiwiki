@@ -346,6 +346,11 @@ sub editcomment ($$) {
 	$form->field(name => 'editcontent', type => 'textarea', rows => 10);
 	$form->field(name => "type", value => $type, force => 1,
 		type => 'select', options => \@page_types);
+	if ($config{comments_allowdate})
+	{
+	    $form->tmpl_param(allowdate => 1);
+	    $form->field(name => 'date', type => 'text', size => '40');
+	}
 
 	$form->tmpl_param(username => $session->param('name'));
 
@@ -362,6 +367,7 @@ sub editcomment ($$) {
 		$form->field(name => 'url', type => 'hidden', value => '',
 			force => 1);
 	}
+
 
 	if (! defined $session->param('name')) {
 		# Make signinurl work and return here.
@@ -460,7 +466,22 @@ sub editcomment ($$) {
 	}
 	$content .= " subject=\"$subject\"\n";
 
-	$content .= " date=\"" . decode_utf8(strftime('%Y-%m-%dT%H:%M:%SZ', gmtime)) . "\"\n";
+	if ($config{comments_allowdate})
+	{
+	    my $date = $form->field('date');
+	    if (defined $date and $date)
+	    {
+		$content .= " date=\"" . decode_utf8($date) . "\"\n";
+	    }
+	    else
+	    {
+		$content .= " date=\"" . decode_utf8(strftime('%Y-%m-%dT%H:%M:%SZ', gmtime)) . "\"\n";
+	    }
+	}
+	else
+	{
+	    $content .= " date=\"" . decode_utf8(strftime('%Y-%m-%dT%H:%M:%SZ', gmtime)) . "\"\n";
+	}
 
 	my $editcontent = $form->field('editcontent');
 	$editcontent="" if ! defined $editcontent;
