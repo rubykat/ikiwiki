@@ -76,8 +76,9 @@ sub templatefile (@) {
 	}
 
 	# Otherwise, check for a template pagespec
-	while (my ($tmpl, $spec) = each %{$config{pagetemplate_matching}})
+	foreach my $tmpl (keys %{$config{pagetemplate_matching}})
 	{
+	    my $spec = $config{pagetemplate_matching}->{$tmpl};
 	    if (pagespec_match($params{page}, $spec))
 	    {
 		return $tmpl;
