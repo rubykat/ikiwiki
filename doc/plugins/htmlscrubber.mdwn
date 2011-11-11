@@ -6,7 +6,8 @@ to avoid XSS attacks and the like.
 
 It excludes all html tags and attributes except for those that are
 whitelisted using the same lists as used by Mark Pilgrim's Universal Feed
-Parser, documented at <http://feedparser.org/docs/html-sanitization.html>.
+Parser, documented at
+<http://web.archive.org/web/20110726052341/http://feedparser.org/docs/html-sanitization.html>.
 Notably it strips `style` and `link` tags, and the `style` attribute.
 
 All attributes that can be used to specify an url are checked to make sure
@@ -33,7 +34,7 @@ potentially unsafe HTML tags.
 
 The `htmlscrubber_skip` configuration setting can be used to skip scrubbing
 of some pages. Set it to a [[ikiwiki/PageSpec]], such as 
-"posts/* and !comment(*) and !*/Discussion", and pages matching that can have
+`posts/* and !comment(*) and !*/Discussion`, and pages matching that can have
 all the evil CSS, JavsScript, and unsafe html elements you like. One safe
 way to use this is to use [[lockedit]] to lock those pages, so only admins
 can edit them.
