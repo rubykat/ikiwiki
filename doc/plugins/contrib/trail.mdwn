@@ -1,24 +1,26 @@
 [[!tag patch]]
-[[!template id=gitbranch branch=smcv/trail author="[[smcv]]"]]
+[[!template id=gitbranch branch=smcv/trail3 author="[[smcv]]"]]
 
-Available from [[smcv]]'s git repository, in the `trail` branch. This
+Available from [[smcv]]'s git repository, in the `trail3` branch. This
 plugin aims to solve [[todo/wikitrails]] in a simpler way; it can also be
 used for [[navigation through blog posts|todo/Pagination_next_prev_links]].
 
-Manual installation requires these files (use the "raw" link in gitweb to download):
+If you don't want to use a branch of ikiwiki, manual installation requires
+these files (use the "raw" link in gitweb to download):
 
-* [trail.pm](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail:/IkiWiki/Plugin/trail.pm)
+* [trail.pm](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail3:/IkiWiki/Plugin/trail.pm)
   in an `IkiWiki/Plugin` subdirectory of your configured `plugindir`
-* [page.tmpl](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail:/templates/page.tmpl)
+* [page.tmpl](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail3:/templates/page.tmpl)
   and
-  [trails.tmpl](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail:/templates/trails.tmpl)
+  [trails.tmpl](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail3:/templates/trails.tmpl)
   in your configured `templatedir`, or a `templates` subdirectory of your wiki repository
 * the trail-related bits from the end of the
-  [stylesheet](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail:/doc/style.css)
+  [stylesheet](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail3:/doc/style.css)
+  (put them in your local.css)
 * the trail-related bits at the end of the
-  [actiontabs](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail:/themes/actiontabs/style.css)
-  or [blueview](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail:/themes/blueview/style.css)
-  stylesheets, if you use one of those themes
+  [actiontabs](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail3:/themes/actiontabs/style.css)
+  or [blueview/goldtype](http://git.pseudorandom.co.uk/smcv/ikiwiki.git/blob/trail3:/themes/blueview/style.css)
+  stylesheets, if you use one of those themes (again, put them in your local.css)
 
 The branch also includes [[todo/test_coverage]] machinery.
 
@@ -31,7 +33,7 @@ Demo:
 The page `e` is in both demo trails, to demonstrate how a page in more than
 one trail looks.
 
-The `smcv/trail2` branch is an older version of `trail` which used typed links
+The `smcv/trail2` branch is an older version of `trail3` which used typed links
 as its data structure, resulting in timing-related limitations (it couldn't
 select pages for the trail by using pagespecs, because pagespecs can't be
 evaluated correctly until the scan stage has finished).
@@ -50,15 +52,15 @@ Updated, November 2011:
 Known bugs:
 
 * the blueview and goldtype CSS nearly work, but the alignment is a bit off
-* a `trailinline` with no `sort` option is sorted in arbitrary order
 
 ----
 
 [[!template id=plugin name=trail author="[[Simon_McVittie|smcv]]"]]
 [[!tag type/chrome]]
 
-This plugin provides the [[ikiwiki/directive/trail]],
+This plugin provides the [[ikiwiki/directive/trailoptions]],
 [[ikiwiki/directive/traillink]], [[ikiwiki/directive/trailitem]],
+[[ikiwiki/directive/trailitems]]
 and [[ikiwiki/directive/trailinline]] [[directives|ikiwiki/directive]].
 
 It's sometimes useful to have "trails" of pages in a wiki where each
@@ -74,6 +76,9 @@ trails that it's a member of (if any), with links to the trail and to
 the next and previous members. HTML `<link>` tags with the `prev`,
 `next` and `up` relations are also generated.
 
+The [[ikiwiki/directive/trailoptions]] directive sets options for the
+entire trail.
+
 Pages can be included in a trail in various ways:
 
 * The [[ikiwiki/directive/trailinline]] directive sets up an [[inline]],
@@ -86,7 +91,7 @@ Pages can be included in a trail in various ways:
   This directive only works if the [[!iki plugins/inline desc=inline]]
   plugin is also enabled.
 
-* The [[ikiwiki/directive/trail]] directive has optional `pages` and
+* The [[ikiwiki/directive/trailitems]] directive has optional `pages` and
   `pagenames` options which behave the same as in [[inline]], but don't
   produce any output in the page, so you can have trails that don't list
   all their pages.
@@ -122,9 +127,7 @@ Pages can be included in a trail in various ways:
   Like `\[[!tag]]`, this still counts as a [[ikiwiki/WikiLink]] even though
   there's no visible link.
 
-You can mix several of these directives in one page, and the resulting
+You can mix several of these directives in one page. The resulting
 trail will contain all of the pages matched by any of the directives,
-in the same order as the directives (unless you use the `sort` option
-on `\[[!trail]]` or `\[[!trailinline]]`, which takes precedence).
-
-The [[ikiwiki/directive/trail]] directive can also be used to set options.
+in the same order that the directives appear (unless you use the `sort` or
+`reverse` options on `\[[!trailoptions]]`).
