@@ -1,3 +1,25 @@
+ikiwiki (3.20111230) UNRELEASED; urgency=low
+
+  * mdwn: Can use the discount markdown library, via the
+    Text::Markdown::Discount perl module. This is preferred if available
+    since it's the fastest currently supported markdown library, speeding up
+    ikiwiki's rendering by a factor of 40.
+    (However, when multimarkdown is enabled, Text::Markdown::Multimarkdown
+    is still used.)
+  * On Debian, depend on libtext-markdown-discount.
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 01 Jan 2012 16:22:24 -0400
+
+ikiwiki (3.20111229) unstable; urgency=low
+
+  * Consume all stdin when rcs_receive short-circuits,
+    to avoid git SIGPIPE race.
+  * Add path and path_natural sort orders (smcv)
+  * Test coverage can be checked with `make coverage` (smcv)
+  * tag: encode categories using numeric values. (tango)
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 29 Dec 2011 12:00:53 -0400
+
 ikiwiki (3.20111107) unstable; urgency=low
 
   * img: Bugfix to width/height tags for scaled down image when only
