@@ -74,8 +74,10 @@ think about merging them. This is recommended. :-)
 * nezmer `git://gitorious.org/ikiwiki-nezmer/ikiwiki-nezmer.git`
 * [[yds]] `git://github.com/yds/ikiwiki.git`
 * [[pelle]] `git://github.com/hemmop/ikiwiki.git`
+* [[chrismgray]] `git://github.com/chrismgray/ikiwiki.git`
+* [[ttw]] `git://github.com/ttw/ikiwiki.git`
+* [[anarcat]] `git://src.anarcat.ath.cx/ikiwiki`
 
 ## branches
 
 Current branches of ikiwiki are listed on [[branches]].
-

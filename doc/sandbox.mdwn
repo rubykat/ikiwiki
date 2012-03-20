@@ -1,14 +1,19 @@
 # Sandbox
 
 [[!pagestats  pages="/tags/*"]]
-
+<<<<<<< HEAD
+ttt
 [[!sidebar  content="dfdsfsf""
 This is my custom sidebar for this page.
 
 \[[!calendar pages="posts/*"]]
 """]]
 
+
+asdfasdf asdfasldkfj asdf
+
 [[!sidebar ]]
+
 
 ## number 2
 ### number 3
@@ -17,6 +22,8 @@ This is the [[SandBox]], a page anyone can edit to try out ikiwiki
 (version [[!version  ]]).
 
 [[!toc levels=1 startlevel=2 ]]
+
+See, online editing :-p
 
 Let's try this~!
 
@@ -116,6 +123,13 @@ Now we try to write a "code" block starting with a hash sign
     $ another test
 
 
+Oh, let's try to do the same thing using sane syntax instead:
+
+~~~
+# test 1,2,3
+$ another test
+~~~
+
 Now let's write the same block, with a bullest list preceding it.
 
 
@@ -171,3 +185,7 @@ endmodule
 #<asd>
 
 This is simple enough for now [[sandbocen]] no?
+
+    Do code tags work?
+
+test by max

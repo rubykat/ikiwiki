@@ -79,6 +79,7 @@ Projects & Organizations
 * [Oxford Computer Society](http://www.ox.compsoc.net/)
 * [Russian OpenBSD Community wiki](http://wiki.openbsd.ru/)
 * [Arcada Project](http://arcadaproject.org/)
+* [*BSD UNIX user group in Denmark](http://www.bsd-dk.dk/)
 
 Personal sites and blogs
 ========================
@@ -165,10 +166,14 @@ Personal sites and blogs
 * [Jonas Smedegaard](http://dr.jones.dk/) multilingual "classic" website w/ blog
 * [Siri Reiter](http://sirireiter.dk/) portfolio website with a blog (in danish)
 * [L'Altro Wiki](http://laltromondo.dynalias.net/~iki/) Tutorials, reviews, miscellaneus articles in English and Italian.
-* [STUPiD](http://lhzhang.com/)
 * gregoa's [p.r. - political rants](http://info.comodo.priv.at/pr/)
 * [Michael Hammer](http://www.michael-hammer.at/)
 * [Richardson Family Wiki](http://the4richardsons.com) A wiki, blog or some such nonsense for the family home page or something or other... I will eventually move the rest of my sites to ikiwiki. The source of the site is in git.
 * [The personal website of Andrew Back](http://carrierdetect.com)
 * [SolderPad Documentation](http://docs.solderpad.com)
 * various sub-domains at kisikew.org ([example](https://portal.kisikew.org/))
+* [Paul Elms](http://paul.elms.pro) Personal site and blog in russian.
+* [James' Tech Notes](http://jamestechnotes.com) My technical notes, blog, wiki, personal site.
+* [Salient Dream](http://www.salientdream.com/) - All Things Strange. 
+* [Kafe-in.net](https://www.kafe-in.net/) Ugly personnal blog.
+* [Anton Berezin's blog](http://blog.tobez.org/)
