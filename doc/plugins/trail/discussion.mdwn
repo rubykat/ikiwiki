@@ -31,7 +31,7 @@ or trail member has actually been edited.
 
 For it to be useful for `trail`, the `prebuild` hook has to run
 after both pagespecs and sorting work. The other use case
-I've seen for a similar hook was for Guiseppe Bilotta to
+I've seen for a similar hook was for Giuseppe Bilotta to
 sort an inline-of-inlines by mtime of newest post, but that
 can't be the same hook, because it has to run after pagespecs
 work, but before sorting.
@@ -87,3 +87,19 @@ t/trail.t .................... 1/?
 >> utime or sleep; I chose utime, since sleeping for 1 second would
 >> slow down the test significantly. Please merge or cherry-pick
 >> `smcv/trail-test` (there's only one commit). --[[smcv]]
+
+----
+
+[[!template id=gitbranch branch=smcv/ready/trail author=smcv]]
+
+Some later changes to trail:
+
+* Display the trail links at beginning/end of default `page.tmpl`
+  as suggested on IRC
+* Improve CSS, particularly in blueview and goldtype themes
+  ([example](http://blueview.hosted.pseudorandom.co.uk/posts/second_post/))
+* Fix a possible bug regarding state deletion
+
+--[[smcv]]
+
+> Applied --[[Joey]] 

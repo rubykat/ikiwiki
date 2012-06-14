@@ -26,10 +26,12 @@ sub import {
 # 
 # * $pagestate{$T}{trail}{contents} 
 #   Reference to an array of lists each containing either:
-#     - [link, "link"]
+#     - [pagenames => "page1", "page2"]
+#       Those literal pages
+#     - [link => "link"]
 #       A link specification, pointing to the same page that [[link]]
 #       would select
-#     - [pagespec, "posts/*", "age", 0]
+#     - [pagespec => "posts/*", "age", 0]
 #       A match by pagespec; the third array element is the sort order
 #       and the fourth is whether to reverse sorting
 # 
@@ -148,8 +150,8 @@ sub preprocess_trailitems (@) {
 	}
 
 	if (exists $params{pagenames}) {
-		my @list = map { [link =>  $_] } split ' ', $params{pagenames};
-		push @{$pagestate{$params{page}}{trail}{contents}}, @list;
+		push @{$pagestate{$params{page}}{trail}{contents}},
+			[pagenames => (split ' ', $params{pagenames})];
 	}
 
 	return "";
@@ -271,6 +273,19 @@ sub prerender {
 					$c->[1], sort => $c->[2],
 					reverse => $c->[3]);
 			}
+			elsif ($c->[0] eq 'pagenames') {
+				my @pagenames = @$c;
+				shift @pagenames;
+				foreach my $page (@pagenames) {
+					if (exists $pagesources{$page}) {
+						push @$members, $page;
+					}
+					else {
+						# rebuild trail if it turns up
+						add_depends($trail, $page, deptype("presence"));
+					}
+				}
+			}
 			elsif ($c->[0] eq 'link') {
 				my $best = bestlink($trail, $c->[1]);
 				push @$members, $best if length $best;
@@ -320,7 +335,7 @@ sub prerender {
 		if (exists $pagestate{$member}{trail}{item} &&
 			! exists $member_to_trails{$member}) {
 			$rebuild_trail_members{$member} = 1;
-			delete $pagestate{$member}{trailitem};
+			delete $pagestate{$member}{trail}{item};
 		}
 	}
 
