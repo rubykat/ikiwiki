@@ -1,8 +1,8 @@
 [[!comment format=mdwn
  username="https://www.google.com/accounts/o8/id?id=AItOawk_MMtLPS7osC5MjX00q2ATjvvXPWqm0ik"
  nickname="micheal"
- subject="comment 1"
- date="2012-03-05T18:44:36Z"
+ subject="comment 5"
+ date="2012-03-29T18:55:37Z"
  content="""
-Any Ideas what I could do?
+Solved by `sudo chmod a+x /home/myuser`
 """]]

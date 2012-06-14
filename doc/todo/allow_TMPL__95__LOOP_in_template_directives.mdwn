@@ -6,9 +6,27 @@ Simply copied this from my website
 feel free to reformat / delete"""]]
 
 The following re-write allows for multiple definitions of the
-same tag value in a template definition.  This, in turn, allows
-us to use TMPL_LOOPS in our template directives; all-be-it in a
+same tag value in a [[plugins/template]] definition.  This, in turn, allows
+us to use TMPL_LOOPS in our [[ikiwiki/directive/template]] directives; all-be-it in a
 rather limited way.
+
+> I'm willing to consider such a feature, but it needs to be presented in
+> the form of a patch that is reviewable, not a gratuitous rewrite.
+> --[[Joey]] 
+
+>> Yes, my apologies for that.  The two worker functions `mktmpl_hash`
+and `proc_tmpl_hash` are new.  The `preprocess` function then starts
+by arranging the parameters into an array.  This array is passed to the
+`mktmpl_hash` and it creates a hash, suitable for passing into the
+HTML::Template directly.  The `proc_tmpl_hash` then walks the hash
+structure and processes the parameters.
+
+>> I know ... you weren't looking for an explanation, just a patch
+... totally understand.  Point I'm trying to make, it's a 90% re-write
+anyway (and my `style(8)` will probably piss most people off).
+
+>> Anyway, would love to contribute so will try to get to doing this
+"correctly" and post as a patch.
 
 I would, personally, only use this feature for very basic loops
 and, although nested loops *might* be possible (with a little

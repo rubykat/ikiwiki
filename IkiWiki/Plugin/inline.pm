@@ -26,7 +26,7 @@ sub import {
 	# Hook to change to do pinging since it's called late.
 	# This ensures each page only pings once and prevents slow
 	# pings interrupting page builds.
-	hook(type => "change", id => "inline", call => \&IkiWiki::pingurl);
+	hook(type => "rendered", id => "inline", call => \&IkiWiki::pingurl);
 }
 
 sub getopt () {
@@ -211,8 +211,7 @@ sub preprocess_inline (@) {
 			}
 		}
 
-		@list = map { bestlink($params{page}, $_) }
-		        split ' ', $params{pagenames};
+		@list = split ' ', $params{pagenames};
 
 		if (yesno($params{reverse})) {
 			@list=reverse(@list);
@@ -221,6 +220,8 @@ sub preprocess_inline (@) {
 		foreach my $p (@list) {
 			add_depends($params{page}, $p, deptype($quick ? "presence" : "content"));
 		}
+
+		@list = grep { exists $pagesources{$_} } @list;
 	}
 	else {
 		my $num=0;

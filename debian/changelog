@@ -1,4 +1,48 @@
-ikiwiki (3.20120203) unstable; urgency=low
+ikiwiki (3.20120517) UNRELEASED; urgency=low
+
+  * mirrorlist: Add mirrorlist_use_cgi setting that avoids usedirs or
+    other config differences by linking to the mirror's CGI. (intrigeri)
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 03 Jun 2012 13:15:22 -0400
+
+ikiwiki (3.20120516) unstable; urgency=high
+
+  * meta: Security fix; add missing sanitization of author and authorurl.
+    CVE-2012-0220 Thanks, Raúl Benencia
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 16 May 2012 19:51:27 -0400
+
+ikiwiki (3.20120419) unstable; urgency=low
+
+  * Remove dead link from plugins/teximg. Closes: #664885
+  * inline: When the pagenames list includes pages that do not exist, skip
+    them.
+  * meta: Export author information in html <meta> tag. Closes: #664779
+    Thanks, Martin Michlmayr
+  * notifyemail: New plugin, sends email notifications about new and 
+    changed pages, and allows subscribing to comments.
+  * Added a "changes" hook. Renamed the "change" hook to "rendered", but
+    the old hook name is called for now for back-compat.
+  * meta: Support keywords header. Closes: #664780
+    Thanks, Martin Michlmayr
+  * passwordauth: Fix url in password recovery email to be absolute.
+  * httpauth: When it's the only auth method, avoid a pointless and
+    confusing signin form, and go right to the httpauthurl.
+  * rename: Allow rename to be started not from the edit page; return to
+    the renamed page in this case.
+  * remove: Support removing of pages in the transient underlay. (smcv)
+  * inline, trail: The pagenames parameter is now a list of absolute
+    pagenames, not relative wikilink type names. This is necessary to fix
+    a bug, and makes pagenames more consistent with the pagespec used
+    in the pages parameter. (smcv)
+  * link: Fix renaming wikilinks that contain embedded urls.
+  * graphviz: Handle self-links.
+  * trail: Improve CSS, also display trail links at bottom of page,
+    and a bug fix. (smcv)
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 19 Apr 2012 15:32:07 -0400
+
+ikiwiki (3.20120319) unstable; urgency=low
 
   * osm: New plugin to embed an OpenStreetMap into a wiki page.
     Supports waypoints, tags, and can even draw paths matching
