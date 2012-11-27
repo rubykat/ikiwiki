@@ -60,6 +60,46 @@ sub getsetup () {
 			safe => 0,
 			rebuild => 1,
 		},
+		osm_openlayers_url => {
+			type => "string",
+			example => "http://www.openlayers.org/api/OpenLayers.js",
+			description => "Url for the OpenLayers.js file",
+			safe => 0,
+			rebuild => 1,
+		},
+		osm_layers => {
+			type => "string",
+			example => { 'OSM', 'GoogleSatellite' },
+			description => "Layers to use in the map. Can be either the 'OSM' string or a type option for Google maps (GoogleNormal, GoogleSatellite, GoogleHybrid or GooglePhysical). It can also be an arbitrary URL in a syntax acceptable for OpenLayers.Layer.OSM.url parameter.",
+			safe => 0,
+			rebuild => 1,
+		},
+	        osm_google_apikey => {
+			type => "string",
+			example => "",
+			description => "Google maps API key, Google layer not used if missing, see https://code.google.com/apis/console/ to get an API key",
+			safe => 1,
+			rebuild => 1,
+		},
+}
+
+sub register_rendered_files {
+	my $map = shift;
+	my $page = shift;
+	my $dest = shift;
+
+	if ($page eq $dest) {
+		my %formats = get_formats();
+		if ($formats{'GeoJSON'}) {
+			will_render($page, "$map/pois.json");
+		}
+		if ($formats{'CSV'}) {
+			will_render($page, "$map/pois.txt");
+		}
+		if ($formats{'KML'}) {
+			will_render($page, "$map/pois.kml");
+		}
+	}
 }
 
 sub preprocess {
@@ -98,6 +138,8 @@ sub preprocess {
 		);
 	}
 
+	register_rendered_files($map, $page, $dest);
+
 	$pagestate{$page}{'osm'}{$map}{'displays'}{$name} = {
 		height => $height,
 		width => $width,
@@ -108,6 +150,7 @@ sub preprocess {
 		lat => $lat,
 		lon => $lon,
 		href => $href,
+		google_apikey => $config{'osm_google_apikey'},
 	};
 	return "<div id=\"mapdiv-$name\"></div>";
 }
@@ -150,18 +193,7 @@ sub process_waypoint {
 	}
 	$icon = urlto($icon, $dest, 1);
 	$tag = '' unless $tag;
-	if ($page eq $dest) {
-		my %formats = get_formats();
-		if ($formats{'GeoJSON'}) {
-			will_render($page, "$map/pois.json");
-		}
-		if ($formats{'CSV'}) {
-			will_render($page, "$map/pois.txt");
-		}
-		if ($formats{'KML'}) {
-			will_render($page, "$map/pois.kml");
-		}
-	}
+	register_rendered_files($map, $page, $dest);
 	$pagestate{$page}{'osm'}{$map}{'waypoints'}{$name} = {
 		page => $page,
 		desc => $desc,
@@ -327,22 +359,29 @@ sub writekml($;$) {
 	foreach my $map (keys %waypoints) {
 		my $output;
 		my $writer = XML::Writer->new( OUTPUT => \$output,
-			DATA_MODE => 1, ENCODING => 'UTF-8');
+			DATA_MODE => 1, DATA_INDENT => ' ', ENCODING => 'UTF-8');
 		$writer->xmlDecl();
 		$writer->startTag("kml", "xmlns" => "http://www.opengis.net/kml/2.2");
+		$writer->startTag("Document");
 
 		# first pass: get the icons
+		my %tags_map = (); # keep track of tags seen
 		foreach my $name (keys %{$waypoints{$map}}) {
 			my %options = %{$waypoints{$map}{$name}};
-			$writer->startTag("Style", id => $options{tag});
-			$writer->startTag("IconStyle");
-			$writer->startTag("Icon");
-			$writer->startTag("href");
-			$writer->characters($options{icon});
-			$writer->endTag();
-			$writer->endTag();
-			$writer->endTag();
-			$writer->endTag();
+			if (!$tags_map{$options{tag}}) {
+			    debug("found new style " . $options{tag});
+			    $tags_map{$options{tag}} = ();
+			    $writer->startTag("Style", id => $options{tag});
+			    $writer->startTag("IconStyle");
+			    $writer->startTag("Icon");
+			    $writer->startTag("href");
+			    $writer->characters($options{icon});
+			    $writer->endTag();
+			    $writer->endTag();
+			    $writer->endTag();
+			    $writer->endTag();
+			}
+			$tags_map{$options{tag}}{$name} = \%options;
 		}
 	
 		foreach my $name (keys %{$waypoints{$map}}) {
@@ -388,6 +427,7 @@ sub writekml($;$) {
 			$writer->endTag();
 			$writer->endTag();
 		}
+		$writer->endTag();
 		$writer->endTag();
 		$writer->end();
 
@@ -500,6 +540,7 @@ sub cgi($) {
 		zoom => "urlParams['zoom']",
 		fullscreen => 1,
 		editable => 1,
+		google_apikey => $config{'osm_google_apikey'},
 	);
 	print "</script>";
 	print "</body></html>";
@@ -509,15 +550,22 @@ sub cgi($) {
 
 sub embed_map_code(;$) {
 	my $page=shift;
-	return '<script src="http://www.openlayers.org/api/OpenLayers.js" type="text/javascript" charset="utf-8"></script>'.
+	my $olurl = $config{osm_openlayers_url} || "http://www.openlayers.org/api/OpenLayers.js";
+	my $code = '<script src="'.$olurl.'" type="text/javascript" charset="utf-8"></script>'."\n".
 		'<script src="'.urlto("ikiwiki/osm.js", $page).
 		'" type="text/javascript" charset="utf-8"></script>'."\n";
+	if ($config{'osm_google_apikey'}) {
+	    $code .= '<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$config{'osm_google_apikey'}.'&sensor=false" type="text/javascript" charset="utf-8"></script>';
+	}
+	return $code;
 }
 
 sub map_setup_code($;@) {
 	my $map=shift;
 	my $name=shift;
 	my %options=@_;
+
+	my $mapurl = $config{osm_map_url};
 
 	eval q{use JSON};
 	error $@ if $@;
@@ -534,6 +582,11 @@ sub map_setup_code($;@) {
 	if ($formats{'KML'}) {
 		$options{'kmlurl'} = urlto($map."/pois.kml");
 	}
+
+	if ($mapurl) {
+		$options{'mapurl'} = $mapurl;
+	}
+        $options{'layers'} = $config{osm_layers};
 
 	return "mapsetup('mapdiv-$name', " . to_json(\%options) . ");";
 }

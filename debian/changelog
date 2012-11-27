@@ -1,11 +1,51 @@
-ikiwiki (3.20120630) UNRELEASED; urgency=low
+ikiwiki (3.20121018) UNRELEASED; urgency=low
+
+  * filecheck: Fix bug that prevented File::MimeInfo::Magic from ever
+    being used.
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 04 Nov 2012 11:59:10 -0400
+
+ikiwiki (3.20121017) unstable; urgency=low
+
+  * recentchangesdiff: fix further breakage to the template from 3.20120725 
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 16 Oct 2012 20:49:27 -0400
+
+ikiwiki (3.20121016) unstable; urgency=low
+
+  * monochrome: New theme, contributed by Jon Dowland.
+  * rst: Ported to python 3, while still also being valid python 2.
+    Thanks, W. Trevor King
+  * Try to avoid a situation in which so many ikiwiki cgi wrapper programs
+    are running, all waiting on some long-running thing like a site rebuild,
+    that it prevents the web server from doing anything else. The current
+    approach only avoids this problem for GET requests; if multiple cgi's
+    run GETs on a site at the same time, one will display a "please wait"
+    page for a configurable number of seconds, which then redirects to retry.
+    To enable this protection, set cgi_overload_delay to the number of
+    seconds to wait. This is not enabled by default.
+  * Add back a 1em margin between archivepage divs.
+  * recentchangesdiff: Correct broken template that resulted in duplicate
+    diff icons being displayed, and bloated the recentchanges page with
+    inline diffs when the configuration should have not allowed them.
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 16 Oct 2012 15:14:19 -0400
+
+ikiwiki (3.20120725) unstable; urgency=low
 
   * recentchangesdiff: When diffurl is not set, provide inline diffs
     in the recentchanges page, with visibility toggleable via javascript.
     Thanks, Antoine Beaupré
   * Split CFLAGS into words when building wrapper. Closes: #682237
+  * osm: Avoid calling urlto before generated files are registered.
+    Thanks, Philippe Gauthier and Antoine Beaupré
+  * osm: Add osm_openlayers_url configuration setting.
+    Thanks, Genevieve
+  * osm: osm_layers can be used to configured the layers displayed on the map.
+    Thanks, Antoine Beaupré
+  * comments: Remove ipv6 address specific code.
 
- -- Joey Hess <joeyh@debian.org>  Thu, 19 Jul 2012 13:46:52 -0400
+ -- Joey Hess <joeyh@debian.org>  Sat, 25 Aug 2012 10:58:42 -0400
 
 ikiwiki (3.20120629) unstable; urgency=low
 
