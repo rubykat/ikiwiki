@@ -22,3 +22,23 @@ main = forever $
 """]]
 
 > --[[Joey]]
+
+> > It is not a standard feature (as much as Markdown is [[standardized|Track_Markdown_Standardisation_Efforts]]...) But it does allow for [syntax hilightning](https://help.github.com/articles/github-flavored-markdown) too, just tag the language name after the backticks. It *seems* that Discount supports github-style backtick format (as well as Pandoc `~~~~` format) but doesn't allow the keyword argument.
+> > 
+> > I strongly support this feature. --[[anarcat]]
+> > 
+> > In fact, it turns out that it already works here!
+> >
+> > ~~~~
+> > this is a pandoc-style fenced in code block
+> > this is another line
+> > ~~~~
+> > 
+> > github-style backticks, however, do not add a wrapping `<pre>` block for some reason:
+> >
+> > ```
+> > this is a github-style fenced in code block
+> > this is another line
+> > ```
+> >
+> > ... maybe a bug in Discount... --[[anarcat]]
