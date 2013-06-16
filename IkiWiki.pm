@@ -725,7 +725,7 @@ sub log_message ($$) {
 	my $type=shift;
 
         my ($logsec,$logmin,$loghour,$logmday,$logmon,$logyear,$logwday,$logyday,$logisdst)=localtime(time);
-        my $logtimestamp = sprintf("%4d-%02d-%02d %02d:%02d:%02d",$logyear+1900,$logmon+1,$logmday,$loghour,$logmin,$logsec);
+        my $logtimestamp = sprintf("%02d:%02d:%02d",$loghour,$logmin,$logsec);
 
 	if ($config{syslog}) {
 		require Sys::Syslog;
@@ -739,10 +739,10 @@ sub log_message ($$) {
 		};
 	}
 	elsif (! $config{cgi}) {
-		return print "$logtimestamp @_\n";
+		return print "[$logtimestamp] @_\n";
 	}
 	else {
-		return print STDERR "$logtimestamp @_\n";
+		return print STDERR "[$logtimestamp] @_\n";
 	}
 }
 
