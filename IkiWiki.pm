@@ -2061,7 +2061,6 @@ sub run_hooks ($$) {
 			}
 		}
 		foreach my $id (@first, @middle, @last) {
-                        debug("run_hook $type $id");
 			$sub->($hooks{$type}{$id}{call});
 		}
 	}
