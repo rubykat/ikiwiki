@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ikiwiki 1.51\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-02 14:16-0500\n"
+"POT-Creation-Date: 2013-06-16 09:05+1000\n"
 "PO-Revision-Date: 2007-04-27 22:05+0200\n"
 "Last-Translator: Pawel Tecza <ptecza@net.icm.edu.pl>\n"
 "Language-Team: Debian L10n Polish <debian-l10n-polish@lists.debian.org>\n"
@@ -237,61 +237,61 @@ msgstr ""
 msgid "Comment Moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:358 ../IkiWiki/Plugin/comments.pm:362
+#: ../IkiWiki/Plugin/comments.pm:363 ../IkiWiki/Plugin/comments.pm:367
 msgid "email replies to me"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:396 ../IkiWiki/Plugin/editpage.pm:96
+#: ../IkiWiki/Plugin/comments.pm:402 ../IkiWiki/Plugin/editpage.pm:96
 #: ../IkiWiki/Plugin/editpage.pm:102
 msgid "bad page name"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:399
+#: ../IkiWiki/Plugin/comments.pm:405
 #, fuzzy, perl-format
 msgid "commenting on %s"
 msgstr "tworzenie %s"
 
-#: ../IkiWiki/Plugin/comments.pm:416
+#: ../IkiWiki/Plugin/comments.pm:422
 #, perl-format
 msgid "page '%s' doesn't exist, so you can't comment"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:423
+#: ../IkiWiki/Plugin/comments.pm:429
 #, perl-format
 msgid "comments on page '%s' are closed"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:548
+#: ../IkiWiki/Plugin/comments.pm:569
 msgid "comment stored for moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:550
+#: ../IkiWiki/Plugin/comments.pm:571
 msgid "Your comment will be posted after moderator review"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:563
+#: ../IkiWiki/Plugin/comments.pm:584
 msgid "Added a comment"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:567
+#: ../IkiWiki/Plugin/comments.pm:588
 #, perl-format
 msgid "Added a comment: %s"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:637 ../IkiWiki/Plugin/userlist.pm:55
+#: ../IkiWiki/Plugin/comments.pm:658 ../IkiWiki/Plugin/userlist.pm:55
 #: ../IkiWiki/Plugin/websetup.pm:272
 msgid "you are not logged in as an admin"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:691
+#: ../IkiWiki/Plugin/comments.pm:712
 msgid "Comment moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:732
+#: ../IkiWiki/Plugin/comments.pm:753
 msgid "comment moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:893
+#: ../IkiWiki/Plugin/comments.pm:914
 #, perl-format
 msgid "%i comment"
 msgid_plural "%i comments"
@@ -301,7 +301,7 @@ msgstr[1] ""
 #. translators: Here "Comment" is a verb;
 #. translators: the user clicks on it to
 #. translators: post a comment.
-#: ../IkiWiki/Plugin/comments.pm:903
+#: ../IkiWiki/Plugin/comments.pm:924
 msgid "Comment"
 msgstr ""
 
@@ -438,7 +438,7 @@ msgstr ""
 msgid "Source code: %s"
 msgstr ""
 
-#: ../IkiWiki/Plugin/highlight.pm:179
+#: ../IkiWiki/Plugin/highlight.pm:180
 msgid ""
 "warning: highlight perl module not available; falling back to pass through"
 msgstr ""
@@ -589,11 +589,11 @@ msgstr "więcej"
 msgid "Cannot subscribe your email address without logging in."
 msgstr ""
 
-#: ../IkiWiki/Plugin/notifyemail.pm:135
+#: ../IkiWiki/Plugin/notifyemail.pm:136
 msgid "change notification:"
 msgstr ""
 
-#: ../IkiWiki/Plugin/notifyemail.pm:137
+#: ../IkiWiki/Plugin/notifyemail.pm:138
 msgid "comment notification:"
 msgstr ""
 
@@ -607,7 +607,17 @@ msgstr "awaria w trakcie kompilowania %s"
 msgid "All pages have other pages linking to them."
 msgstr "Dla każdej strony istnieje odnośnik z innej strony"
 
-#: ../IkiWiki/Plugin/pagetemplate.pm:30
+#: ../IkiWiki/Plugin/pagetemplate.pm:44
+#, perl-format
+msgid "pagetemplate_matching: bad or missing template '%s'"
+msgstr ""
+
+#: ../IkiWiki/Plugin/pagetemplate.pm:48
+#, perl-format
+msgid "pagetemplate_matching: invalid pagespec '%s' for template '%s'"
+msgstr ""
+
+#: ../IkiWiki/Plugin/pagetemplate.pm:60
 msgid "bad or missing template"
 msgstr ""
 
@@ -1182,42 +1192,42 @@ msgstr "pomijanie nieprawidłowej nazwy pliku %s"
 msgid "%s has multiple possible source pages"
 msgstr ""
 
-#: ../IkiWiki/Render.pm:373
+#: ../IkiWiki/Render.pm:374
 #, perl-format
 msgid "querying %s for file creation and modification times.."
 msgstr ""
 
-#: ../IkiWiki/Render.pm:447
+#: ../IkiWiki/Render.pm:448
 #, fuzzy, perl-format
 msgid "removing obsolete %s"
 msgstr "usuwanie starej strony %s"
 
-#: ../IkiWiki/Render.pm:531
+#: ../IkiWiki/Render.pm:532
 #, fuzzy, perl-format
 msgid "building %s, which links to %s"
 msgstr "renderowanie %s z odnośnikiem do %s"
 
-#: ../IkiWiki/Render.pm:540
+#: ../IkiWiki/Render.pm:541
 #, fuzzy, perl-format
 msgid "removing %s, no longer built by %s"
 msgstr "usuwanie %s nie tworzonego już przez %s"
 
-#: ../IkiWiki/Render.pm:623 ../IkiWiki/Render.pm:705
+#: ../IkiWiki/Render.pm:624 ../IkiWiki/Render.pm:706
 #, fuzzy, perl-format
 msgid "building %s, which depends on %s"
 msgstr "renderowanie %s zależącego od %s"
 
-#: ../IkiWiki/Render.pm:718
+#: ../IkiWiki/Render.pm:719
 #, fuzzy, perl-format
 msgid "building %s, to update its backlinks"
 msgstr "renderowanie %s w celu aktualizacji powrotnych odnośników"
 
-#: ../IkiWiki/Render.pm:798
+#: ../IkiWiki/Render.pm:799
 #, fuzzy, perl-format
 msgid "building %s"
 msgstr "edycja %s"
 
-#: ../IkiWiki/Render.pm:863
+#: ../IkiWiki/Render.pm:864
 #, fuzzy, perl-format
 msgid "ikiwiki: cannot build %s"
 msgstr "ikiwiki: awaria w trakcie tworzenia %s"
