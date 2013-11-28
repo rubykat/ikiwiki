@@ -35,6 +35,7 @@ sub import {
 	# Load goto to fix up user page links for logged-in commenters
 	IkiWiki::loadplugin("goto");
 	IkiWiki::loadplugin("inline");
+	IkiWiki::loadplugin("transient");
 }
 
 sub getsetup () {
@@ -90,17 +91,31 @@ sub getsetup () {
 			safe => 0,
 			rebuild => 0,
 		},
+		comments_allowformats => {
+			type => 'string',
+			default => '',
+			example => 'mdwn txt',
+			description => 'Restrict formats for comments to (no restriction if empty)',
+			safe => 1,
+			rebuild => 0,
+		},
+
 }
 
 sub checkconfig () {
 	$config{comments_commit} = 1
 		unless defined $config{comments_commit};
+	if (! $config{comments_commit}) {
+		$config{only_committed_changes}=0;
+	}
 	$config{comments_pagespec} = ''
 		unless defined $config{comments_pagespec};
 	$config{comments_closed_pagespec} = ''
 		unless defined $config{comments_closed_pagespec};
 	$config{comments_pagename} = 'comment_'
 		unless defined $config{comments_pagename};
+	$config{comments_allowformats} = ''
+		unless defined $config{comments_allowformats};
 }
 
 sub htmlize {
@@ -128,12 +143,18 @@ sub safeurl ($) {
 	}
 }
 
+sub isallowed ($) {
+    my $format = shift;
+    return ! $config{comments_allowformats} || $config{comments_allowformats} =~ /\b$format\b/;
+}
+
 sub preprocess {
 	my %params = @_;
 	my $page = $params{page};
 
 	my $format = $params{format};
-	if (defined $format && ! exists $IkiWiki::hooks{htmlize}{$format}) {
+	if (defined $format && (! exists $IkiWiki::hooks{htmlize}{$format} ||
+				! isallowed($format))) {
 		error(sprintf(gettext("unsupported page format %s"), $format));
 	}
 
@@ -332,7 +353,7 @@ sub editcomment ($$) {
 
 	my @page_types;
 	if (exists $IkiWiki::hooks{htmlize}) {
-		foreach my $key (grep { !/^_/ } keys %{$IkiWiki::hooks{htmlize}}) {
+		foreach my $key (grep { !/^_/ && isallowed($_) } keys %{$IkiWiki::hooks{htmlize}}) {
 			push @page_types, [$key, $IkiWiki::hooks{htmlize}{$key}{longname} || $key];
 		}
 	}
@@ -556,8 +577,8 @@ sub editcomment ($$) {
 		$postcomment=0;
 
 		if (! $ok) {
-			$location=unique_comment_location($page, $content, $config{srcdir}, "._comment_pending");
-			writefile("$location._comment_pending", $config{srcdir}, $content);
+			$location=unique_comment_location($page, $content, $IkiWiki::Plugin::transient::transientdir, "._comment_pending");
+			writefile("$location._comment_pending", $IkiWiki::Plugin::transient::transientdir, $content);
 
 			# Refresh so anything that deals with pending
 			# comments can be updated.
@@ -682,12 +703,17 @@ sub commentmoderation ($$) {
 				}
 
 				my $page=IkiWiki::dirname($f);
-				my $file="$config{srcdir}/$f";
-				my $filedir=$config{srcdir};
+				my $filedir=$IkiWiki::Plugin::transient::transientdir;
+				my $file="$filedir/$f";
 				if (! -e $file) {
 					# old location
-					$file="$config{wikistatedir}/comments_pending/".$f;
-					$filedir="$config{wikistatedir}/comments_pending";
+					$file="$config{srcdir}/$f";
+					$filedir=$config{srcdir};
+					if (! -e $file) {
+						# older location
+						$file="$config{wikistatedir}/comments_pending/".$f;
+						$filedir="$config{wikistatedir}/comments_pending";
+					}
 				}
 
 				if ($action eq 'Accept') {
@@ -801,6 +827,8 @@ sub comments_pending () {
 		chdir($origdir) || die "chdir $origdir: $!";
 	};
 	
+	$find_comments->($IkiWiki::Plugin::transient::transientdir, "._comment_pending");
+	# old location
 	$find_comments->($config{srcdir}, "._comment_pending");
 	# old location
 	$find_comments->("$config{wikistatedir}/comments_pending/",

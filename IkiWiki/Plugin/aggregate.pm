@@ -58,20 +58,11 @@ sub getsetup () {
 			safe => 1,
 			rebuild => 0,
 		},
-		cookiejar => {
-			type => "string",
-			example => { file => "$ENV{HOME}/.ikiwiki/cookies" },
-			safe => 0, # hooks into perl module internals
-			description => "cookie control",
-		},
 }
 
 sub checkconfig () {
 	if (! defined $config{aggregateinternal}) {
 		$config{aggregateinternal}=1;
-	}
-	if (! defined $config{cookiejar}) {
-		$config{cookiejar}={ file => "$ENV{HOME}/.ikiwiki/cookies" };
 	}
 
 	# This is done here rather than in a refresh hook because it
@@ -522,11 +513,8 @@ sub aggregate (@) {
 			}
 			$feed->{feedurl}=pop @urls;
 		}
-		my $res=URI::Fetch->fetch($feed->{feedurl},
-			UserAgent => LWP::UserAgent->new(
-				cookie_jar => $config{cookiejar},
-			),
-		);
+		my $ua=useragent();
+		my $res=URI::Fetch->fetch($feed->{feedurl}, UserAgent=>$ua);
 		if (! $res) {
 			$feed->{message}=URI::Fetch->errstr;
 			$feed->{error}=1;
@@ -593,6 +581,7 @@ sub aggregate (@) {
 				feed => $feed,
 				copyright => $f->copyright,
 				title => defined $entry->title ? decode_entities($entry->title) : "untitled",
+				author => defined $entry->author ? decode_entities($entry->author) : "",
 				link => $entry->link,
 				content => (defined $c && defined $c->body) ? $c->body : "",
 				guid => defined $entry->id ? $entry->id : time."_".$feed->{name},
@@ -690,6 +679,9 @@ sub write_page ($$$$$) {
 	}
 	$template->param(title => $params{title})
 		if defined $params{title} && length($params{title});
+	$template->param(author => $params{author})
+		if defined $params{author} && length($params{author}
+			&& $params{author} ne $feed->{name});
 	$template->param(content => wikiescape(htmlabs($params{content},
 		defined $params{base} ? $params{base} : $feed->{feedurl})));
 	$template->param(name => $feed->{name});

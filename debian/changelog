@@ -1,3 +1,82 @@
+ikiwiki (3.20130904.2) UNRELEASED; urgency=low
+
+  * aggregate: Improve display of post author.
+  * poll: Fix behavior of poll buttons when inlined.
+  * Fixed unncessary tight loop hash copy in saveindex where a pointer
+    can be used instead. Can speed up refreshes by nearly 50% in some
+    circumstances.
+  * Optimized loadindex by caching the page name in the index.
+  * Added only_committed_changes config setting, which speeds up wiki
+    refresh by querying git to find the files that were changed, rather
+    than looking at the work tree. Not enabled by default as it can
+    break some setups where not all files get committed to git.
+  * comments: Write pending moderation comments to the transient underlay
+    to avoid conflict with only_committed_changes.
+  * search: Added google_search option, which makes it search google
+    rather than using the internal xapain database.
+    (googlesearch plugin is too hard to turn on when xapain databases
+    corrupt themselves, which happens all too frequently).
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 05 Sep 2013 10:01:10 -0400
+
+ikiwiki (3.20130904.1) unstable; urgency=low
+
+  * Fix cookiejar default setting.
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 04 Sep 2013 10:15:37 -0400
+
+ikiwiki (3.20130904) unstable; urgency=low
+
+  * calendar: Display the popup mouseover when there is only 1 page for a
+    given day, for better UI consistency.
+  * meta: Can now be used to add an enclosure to a page, which is a fancier
+    way to do podcasting than just inlining the media files directly;
+    this way you can write a post about the podcast episode with show notes,
+    author information, etc.
+    (schmonz)
+  * aggregate: Show author in addition to feedname, if different.
+    (schmonz)
+  * Consistently configure LWP::UserAgent to allow use of http_proxy
+    and no_proxy environment variables, as well as ~/.ikiwiki/cookies
+    (schmonz)
+  * Fix test suite to work with perl 5.18. Closes: #719969
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 04 Sep 2013 08:54:31 -0400
+
+ikiwiki (3.20130711) unstable; urgency=low
+
+  * Deal with git behavior change in 1.7.2 and newer that broke support
+    for commits with an empty commit message.
+  * Pass --no-edit when used with git 1.7.8 and newer.
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 10 Jul 2013 21:49:23 -0400
+
+ikiwiki (3.20130710) unstable; urgency=low
+
+  * blogspam: Fix encoding issue in RPC::XML call.
+    Thanks, Changaco
+  * comments: The formats allowed to be used in comments can be configured
+    using comments_allowformats.
+    Thanks, Michal Sojka
+  * calendar: When there are multiple pages for a given day, they're
+    displayed in a popup on mouseover.
+    Thanks, Louis
+  * osm: Remove trailing slash from KML maps icon.
+  * page.tmpl: omit searchform, trails, sidebar and most metadata in CGI
+    (smcv)
+  * openid: Automatically upgrade openid_realm to https when
+    accessed via https.
+  * The ip() pagespec can now contain glob characters to match eg, a subnet
+    full of spammers.
+  * Fix crash that could occur when a needsbuild hook returned a file
+    that does not exist.
+  * Fix python proxy to not crash when fed unicode data in getstate
+    and setstate.
+    Thanks, chrysn
+  * Fix committing attachments when using svn.
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 10 Jul 2013 17:45:40 -0400
+
 ikiwiki (3.20130518) unstable; urgency=low
 
   * Fix test suite to not fail when XML::Twig is not installed.

@@ -13,7 +13,7 @@ rejected.
 The gitweb is [here](http://source.ikiwiki.branchable.com/?p=source.git;a=summary).
 
 Commits to this git repository are fed into [KGB](http://kgb.alioth.debian.org/)
-for transmission to the #ikiwiki irc channel.
+for transmission to the #ikiwiki irc channel. See also: [[spam_fighting]]
 
 ## personal git repositories
 
@@ -43,7 +43,7 @@ think about merging them. This is recommended. :-)
 * [[ikiplugins|DavidBremner]] `git://pivot.cs.unb.ca/git/ikiplugins.git`
 * [[jonas|JonasSmedegaard]] `git://source.jones.dk/ikiwiki-upstream`
 * [[arpitjain]] `git://github.com/arpitjain11/ikiwiki.git`
-* [[chrysn]] `git://github.com/github076986099/ikiwiki.git`
+* [[chrysn]] `git://prometheus.amsuess.com/ikiwiki`
 * [[simonraven]] `git://github.com/kjikaqawej/ikiwiki-simon.git`
 * [[schmonz]] `git://github.com/schmonz/ikiwiki.git`
 * [[will]] `http://www.cse.unsw.edu.au/~willu/ikiwiki.git`
@@ -77,6 +77,9 @@ think about merging them. This is recommended. :-)
 * [[anarcat]] `git://src.anarcat.ath.cx/ikiwiki`
 * anderbubble `git://civilfritz.net/ikiwiki.git`
 * frioux `git://github.com/frioux/ikiwiki`
+* llipavsky `git://github.com/llipavsky/ikiwiki`
+* [[cbaines]] `git://github.com/cbaines/ikiwiki.git`
+* [[mhameed]] `git://github.com/mhameed/ikiwiki.git`
 
 ## branches
 

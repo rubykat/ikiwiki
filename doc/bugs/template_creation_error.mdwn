@@ -109,3 +109,89 @@ Please, let me know what to do to avoid this kind of error.
 > for backwards compatibility?
 >
 > --[[smcv]]
+
+>> [[!template id=gitbranch author="[[smcv]]" branch=smcv/definetemplate]]
+>> [[!tag patch]]
+>> OK, here is a branch implementing what I said. It adds the `definetemplate`
+>> directive to [[plugins/goodstuff]] as its last commit.
+>>
+>> Templates with the current strange semantics will still work, until
+>> IkiWiki breaks compatibility.
+>>
+>> Possible controversies:
+>>
+>> * Should the `definetemplate` plugin be core, or in goodstuff, or neither?
+>>
+>> * Should \[[!definetemplate]] be allowed on any page (with the implementation
+>>   of `template("foo")` looking for a `definetemplate` in `templates/foo`,
+>>   then a `definetemplate` in `foo`, then fall back to the current logic)?
+>>   If not, should \[[!definetemplate]] raise an error when used on a page not
+>>   in `templates/`, since it will have no practical effect there?
+>>
+>> * Is it OK to rely on `definetemplate` being enabled in the basewiki's
+>>   templates?
+>>
+>> * Should the "use definetemplate" wording in the documentation of
+>>   template and edittemplate be stronger? Should those plugins automatically
+>>   load definetemplate?
+>>
+>> --[[smcv]]
+
+>>> this looks like a good idea to me.
+>>>
+>>> * i'd put it in core, and add a transition for the time compatibility gets
+>>>   broken, provided the transitioning system will be used in that. templates
+>>>   can't be expected to just work as markdown+ikiwiki too.
+>>>
+>>>   (it being in core would also solve my qualms about `section => "web"` /
+>>>   `\[[!tag type/web]]`).
+>>>
+>>> * if definetemplate gets deemed core, no "use definetemplate!" notes on the
+>>>   template/edittemplate pages will be required any more.
+>>>
+>>> * first i was sceptical of the approach of re-running scan to make sure the
+>>>   `my %templates` is filled, but it is indeed a practical solution.
+>>>
+>>> * the name "`definetemplate`" gives me the first impression that something
+>>>   is assigned (as in `#define`), but actually it highlights a region in the
+>>>   file. wouldn't "`templatebody`" be a better description of the meaning of
+>>>   the directive?
+>>>
+>>> --[[chrysn]]
+
+>>>> Thanks for your feedback!
+>>>> Looking at its description on this wiki, I agree that `type/web` doesn't
+>>>> fit, and core does seem better. I like your `templatebody` suggestion,
+>>>> too, particularly if templates remain restricted to `/templates`.
+>>>> I'll try to come up with better wording for the documentation to say
+>>>> "use `templatebody`, like this", with a note about backwards
+>>>> compatibility later.
+>>>>
+>>>> Rationale for `my %templates`: yes it does seem a bit odd, but
+>>>> if I used `$pagestate{$tpage}{template}` instead of a `my` variable,
+>>>> I'd sometimes _still_ have to force a `scan`, because
+>>>> [[plugins/template]] has to expand the template at scan time so that
+>>>> it can contain links etc. - so I have to make sure that if the
+>>>> template has changed, it has already been scanned (scanning happens
+>>>> in random order, so that can't be guaranteed). This means there's
+>>>> no benefit in reading it back from the index, so it might as well
+>>>> just be in-memory.
+>>>>
+>>>> I suppose an alternative way to do it would be to remember what was
+>>>> passed to `needsbuild`, and only force a `scan` for templates that
+>>>> were in that list - which potentially reduces CPU time and I/O a
+>>>> little, in exchange for a bigger index. I could do that if Joey
+>>>> wants me to, but I think the current approach is simpler,
+>>>> so I'll stick with the current approach if it isn't vetoed.
+>>>> --[[smcv]]
+
+>>>>> @name: even outside `/templates`, `\[[!templatebody]]` would be
+>>>>> interpreted as "when this page is used as a template, this is what its
+>>>>> contents should be", and be suitable.
+>>>>>
+>>>>> @`%templates`: my surprise wasn't to it not being in `%pagestate`, but
+>>>>> rather that the `scan` function was used for it at all, rather than plain
+>>>>> directive parsing that ignores everything else -- but i agree that it's
+>>>>> the right thing to do in this situation.
+>>>>>
+>>>>> --[[chrysn]]

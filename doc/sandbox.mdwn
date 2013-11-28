@@ -1,7 +1,7 @@
 This is the [[SandBox]], a page anyone can edit to try out ikiwiki
 (version [[!version  ]]).
 
-hello world
+hello world (right back at ya)
 
 > This is a blockquote.
 >
@@ -21,17 +21,18 @@ hello world
 Numbered list 
 
 1. First item.
- 1. Sub item.
+    1. Sub item.
+    1. Number 2
 1. Another.
 1. And another..
- 1. foo
- 2. bar
- 3. quz
+    1. foo
+    2. bar
+    3. quz
 
 Bulleted list
 
 * item
-* *item*
+* *italic item*
 * item
 * one
   * footballs; runner; unices
@@ -81,3 +82,12 @@ opopopo
 This **SandBox** is also a [[blog]]!
 
 [[!inline pages="sandbox/* and !*/Discussion" rootpage="sandbox" show="4" archive="yes"]]
+
+Testy test!
+
+
+<p>
+This is an email link:
+<a href="mailto:erik.josefsson@europarl.europa.eu?Subject=Hello%20again" target="_top">
+Send Mail</a>
+</p>

@@ -1,94 +1,28 @@
-ikiwiki's simple podcasting, while elegant and minimal, doesn't (as
-mentioned in [[todo/blogging]]) produce full-featured feeds. In
-fancy podcasts, episodes are accompanied by text content. The feeds
-also have lots more metadata.
-
-[[!toc]]
-
 ## Status
 
 [[!template id=gitbranch branch=schmonz/fancypodcast author="[[schmonz]]"]]
 [[!tag patch]]
 
-In summary, the branch preserves ikiwiki's existing podcast behavior,
-adds more featureful behavior, and has been tested to work well in
-some common podcatchers. I believe it is ready for review and
-possible integration, and I'd like to get feedback to that effect
-(or to the contrary) before making further enhancements. I know
-[[joey]]'s the final arbiter here, but I'd appreciate any qualified,
-critical eyes ([[smcv]]?) raking over my diffs. --[[schmonz]]
+Nothing new since 2013/07/21 [[merge|done]] to `master`.
 
 ## Features
 
 [[!table data="""
 Feature            |iTunes RSS|iTunes Atom|Downcast RSS|Downcast Atom
-Feed image         |{X}       |{X}        |{X}         |{X}
+Feed image         |          |           |            |
 Feed title         |(./)      |(./)       |(./)        |(./)
-Feed publisher     |{X}       |{X}        |{X}         |{X}
-Feed "category"    |{X}       |{X}        |{X}         |{X}
+Feed publisher     |          |           |            |
+Feed "category"    |          |           |            |
 Feed date          |(./)      |(./)       |(./)        |(./)
-Feed description   |(./)      |(./)       |(./)        |{X}
-Episode image      |{X}       |{X}        |{X}         |{X}
+Feed description   |(./)      |(./)       |(./)        |
+Episode image      |          |           |            |
 Episode title      |(./)      |(./)       |(./)        |(./)
 Episode date       |(./)      |(./)       |(./)        |(./)
-Episode duration   |{X}       |{X}        |{X}         |{X}
-Episode author     |{X}       |{X}        |{X}         |{X}
-Episode description|(./)      |(./)       |(./)        |{X}
+Episode duration   |          |           |            |
+Episode author     |          |           |            |
+Episode description|(./)      |(./)       |(./)        |
 Episode enclosure  |(./)      |(./)       |(./)        |(./)
 """]]
-
-## Design
-
-7. For each fancy podcast episode, write a blog post containing
-   `\[[!meta enclosure="WikiLink/to/media.mp3"]]`. (Don't specify
-   more than one enclosure -- but if you do, last one wins.)
-7. When rendering to HTML (single-page or inlined), append a link
-   to the media file.
-7. When rendering to RSS/Atom, the text is the entry's content and
-   the media file is its enclosure.
-7. Don't break simple podcasts in pursuit of fancy podcasts.
-
-## Implementation
-
-### Completed
-
-* Cover the existing simple podcast behavior with tests.
-* Add an `enclosure` field to [[plugins/meta]] that expands the
-  given [[ikiwiki/WikiLink]] to an absolute URL (feed enclosures
-  pretty much need to be, and the reference feeds I've looked at
-  all do this).
-* Write failing tests for the desired single-page and inlined
-  HTML behavior, then make them pass by adding enclosure stanzas
-  to `{,inline}page.tmpl`.
-* Write failing tests for the desired RSS/Atom behavior, then make
-  them pass via changes to `{atom,rss}item.tmpl` and [[plugins/inline]].
-* Match feature-for-feature with
-  [tru_podcast](http://www.rainskit.com/blog/542/tru_podcast-a-podcasting-plugin-for-textpattern)
-  (what [[schmonz]] will be migrating from).
-* Enrich [feed metadata](http://cyber.law.harvard.edu/rss/rss.html)
-  by catching up `rsspage.tmpl` to `atompage.tmpl`.
-* Verify that [[plugins/more]] plays well with fancy podcasts.
-* Verify that the feeds validate.
-* Subscribe to a fancy feed in some common podcatchers and verify
-  display details against a reference podcast.
-
-### Must-have (for [[schmonz]], anyway)
-
-* Think carefully about...
-    * UTF-8.
-    * Whether [[tips/howto avoid flooding aggregators]] suffices for...
-        * Converting a simple podcast to a fancy one.
-            7. Set up a non-production copy of one of my podcasts.
-                * Manually test that feeds match production.
-                * Subscribe to the copy in `r2e`, iTunes, Downcast.
-            7. Try migrating the copy from simple to fancy.
-                * Document the steps I take.
-                * Make the feed readers update.
-                * Document what happens for each of them.
-        * Migrating a fancy podcast from elsewhere into ikiwiki.
-* Verify that _all_ the tests pass (not just my new ones).
-
------
 
 ## Future improvements
 
