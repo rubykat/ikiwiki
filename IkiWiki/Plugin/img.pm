@@ -76,27 +76,26 @@ sub preprocess (@) {
 	my ($dwidth, $dheight);
 
 	if ($params{size} ne 'full') {
-		my ($w, $h) = ($params{size} =~ /^(\d*)x(\d*)$/);
+		my ($w, $h, $flag) = ($params{size} =~ /^(\d*)x(\d*)(.?)$/);
 		error sprintf(gettext('wrong size format "%s" (should be WxH)'), $params{size})
 			unless (defined $w && defined $h &&
 			        (length $w || length $h));
 		
-		if ((length $w && $w > $im->Get("width")) ||
-		    (length $h && $h > $im->Get("height"))) {
+		if (((length $w && $w > $im->Get("width")) ||
+		    (length $h && $h > $im->Get("height")))
+                    && !$flag
+                    ) {
 		    	# resizing larger
 			$imglink = $file;
 
 			# don't generate larger image, just set display size
-			if (length $w && length $h) {
-				($dwidth, $dheight)=($w, $h);
-			}
 			# avoid division by zero on 0x0 image
-			elsif ($im->Get("width") == 0 || $im->Get("height") == 0) {
+			if ($im->Get("width") == 0 || $im->Get("height") == 0) {
 				($dwidth, $dheight)=(0, 0);
 			}
-			# calculate unspecified size from the other one, preserving
+			# calculate size from the smaller one, preserving
 			# aspect ratio
-			elsif (length $w) {
+			elsif (length $w && $w > $im->Get("width")) {
 				$dwidth=$w;
 				$dheight=$w / $im->Get("width") * $im->Get("height");
 			}
@@ -118,7 +117,7 @@ sub preprocess (@) {
 				error sprintf(gettext("failed to read %s: %s"), $outfile, $r) if $r;
 			}
 			else {
-				$r = $im->Resize(geometry => "${w}x${h}");
+				$r = $im->Resize(geometry => "${w}x${h}${flag}");
 				error sprintf(gettext("failed to resize: %s"), $r) if $r;
 
 				# don't actually write resized file in preview mode;
