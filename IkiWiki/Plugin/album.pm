@@ -337,6 +337,7 @@ sub preprocess_album {
 		# in the render phase, we want to keep the sections that we
 		# accumulated during the scan phase, if any
 		sections => $pagestate{$album}{album}{sections},
+                show => (defined $params{show} ? $params{show} : 10),
 	};
 
 	# The sort order depends on matching pagespecs for each
@@ -362,6 +363,7 @@ sub preprocess_album {
 
 		return show_in_album($albumsections{$album}{""},
 			page => $album,
+                        show => $pagestate{$album}{album}{show},
 			destpage => $params{destpage});
 	}
 	else {
@@ -390,7 +392,8 @@ sub preprocess_albumsection {
 
 	return show_in_album($albumsections{$album}{$filter},
 		page => $album,
-		destpage => $params{destpage});
+                show => $pagestate{$album}{album}{show},
+                destpage => $params{destpage});
 }
 
 sub preprocess_albumimage {
