@@ -135,22 +135,54 @@ sub create_viewer {
 	my $vfile = newpagefile($viewer, $config{default_pageext});
 
 	# FIXME: try to read creation date, copyright etc. from EXIF tags
+        my $has_exiftool = 1;
+	eval q{use Image::ExifTool};
+        $has_exiftool = 0 if $@;
+        my $imagefile = $config{srcdir} . '/' . $image;
 
 	add_autofile($vfile, "album", sub {
 		my $message = sprintf(gettext("creating album page %s"), $viewer);
 		debug($message);
+                my $title = '';
+                my $caption = '';
+                my $date = '';
+                my $updated = '';
+                my $author = '';
+                my $authorurl = '';
+                my $copyright = '';
+                my $license = '';
+                my $description = '';
+                my $all_info = '';
+                if ($has_exiftool) {
+                    my $exif = new Image::ExifTool;
+                    $exif->Options(DateFormat => "%Y-%m-%d %H:%M:%S");
+                    if ($exif->ExtractInfo($imagefile))
+                    {
+                        my $info = $exif->GetInfo();
+                        $description = $info->{Comment} if $info->{Comment};
+                        $date = $info->{CreateDate} if $info->{CreateDate};
+                        $updated = $info->{FileModifyDate} if $info->{FileModifyDate};
+                        foreach my $key (sort keys %{$info})
+                        {
+                            $all_info .=<<EOT;
+$key="$info->{$key}"
+EOT
+                        }
+                    }
+                }
 
 		my $content = <<"END";
 [[!albumimage
-  title=""
-  caption=""
-  date=""
-  updated=""
-  author=""
-  authorurl=""
-  copyright=""
-  license=""
-  description=""
+  title="$title"
+  caption="$caption"
+  date="$date"
+  updated="$updated"
+  author="$author"
+  authorurl="$authorurl"
+  copyright="$copyright"
+  license="$license"
+  description="$description"
+$all_info
   ]]
 END
 		# size, thumbnailsize, viewertemplate, prevtemplate,
@@ -484,6 +516,7 @@ sub pagetemplate (@) {
 		my $viewer = $params{page};
 		my $album = $pagestate{$viewer}{album}{album};
 		my $image = $pagestate{$viewer}{album}{image};
+                my $thumbnailsize = $pagestate{$album}{album}{thumbnailsize};
 
 		return unless defined $album;
 		return unless defined $image;
@@ -495,7 +528,7 @@ sub pagetemplate (@) {
 
 		if ($template->query(name => 'thumbnail')) {
 			$template->param(thumbnail =>
-				thumbnail($viewer, $params{destpage}));
+				thumbnail($viewer, $params{destpage}, $thumbnailsize));
 		}
 		if (IkiWiki::isinlinableimage($image)
 			&& ($template->query(name => 'imagewidth') ||
