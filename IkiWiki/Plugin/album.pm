@@ -467,12 +467,12 @@ sub preprocess_albumimage {
 	my $next = '';
 
 	if (defined $nextpage) {
-		add_depends($album, $nextpage);
+		add_depends($album, $nextpage, deptype('presence'));
 		$next = show_prevnext($nextpage, $viewer, "next");
 	}
 
 	if (defined $prevpage) {
-		add_depends($album, $prevpage);
+		add_depends($album, $prevpage, deptype('presence'));
 		$prev = show_prevnext($prevpage, $viewer, "prev");
 	}
 
