@@ -153,6 +153,7 @@ sub create_viewer {
                 my $license = '';
                 my $description = '';
                 my $all_info = '';
+                my $meta_date = '';
                 if ($has_exiftool) {
                     my $exif = new Image::ExifTool;
                     $exif->Options(DateFormat => "%Y-%m-%d %H:%M:%S");
@@ -160,18 +161,39 @@ sub create_viewer {
                     {
                         my $info = $exif->GetInfo();
                         $description = $info->{Comment} if $info->{Comment};
-                        $date = $info->{CreateDate} if $info->{CreateDate};
-                        $updated = $info->{FileModifyDate} if $info->{FileModifyDate};
+                        if ($info->{CreateDate})
+                        {
+                            $date = $info->{CreateDate};
+                        }
+                        elsif ($info->{DateTimeOriginal})
+                        {
+                            $date = $info->{DateTimeOriginal};
+                        }
+                        if ($info->{ModifyDate})
+                        {
+                            $updated = $info->{ModifyDate};
+                        }
+                        elsif ($info->{FileModifyDate})
+                        {
+                            $updated = $info->{FileModifyDate};
+                        }
                         foreach my $key (sort keys %{$info})
                         {
                             $all_info .=<<EOT;
 $key="$info->{$key}"
 EOT
                         }
+                        if ($date)
+                        {
+                            $meta_date =<<EOT;
+[[!meta date="$date"]]
+EOT
+                        }
                     }
                 }
 
 		my $content = <<"END";
+$meta_date
 [[!albumimage
   title="$title"
   caption="$caption"
