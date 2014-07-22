@@ -1,3 +1,56 @@
+ikiwiki (3.20140614) UNRELEASED; urgency=medium
+
+  * Add google back to openid selector. Apparently this has gotten a stay
+    of execution until April 2015. (It may continue to work until 2017.)
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 03 Jul 2014 16:19:40 -0400
+
+ikiwiki (3.20140613) unstable; urgency=medium
+
+  * only_committed_changes could fail in a git repository merged
+    with git merge -s ours.
+  * Remove google from openid selector, per http://xkcd.com/1361/
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 13 Jun 2014 10:09:10 -0400
+
+ikiwiki (3.20140227) unstable; urgency=medium
+
+  * Added useragent config setting. Closes: #737121
+    Thanks, Tuomas Jormola
+  * po: Add html_lang_code and html_lang_dir template variables
+    for the language code and direction of text.
+    Thanks, Mesar Hameed
+  * Allow up to 8 levels of nested directives, rather than previous 3
+    in directive infinite loop guard.
+  * git diffurl: Do not escape / in paths to changed files, in order to
+    interoperate with cgit (gitweb works either way)
+    Thanks, intrigeri.
+  * git: Explicity push master branch, as will be needed by git 2.0's
+    change to push.default=matching by default.
+    Thanks, smcv
+  * Deal with nasty issue with gettext clobbering $@ while printing
+    error message containing it.
+    Thanks, smcv
+  * Cleanup of the openid login widget, including replacing of hotlinked
+    images from openid providers with embedded, freely licensed artwork.
+    Thanks, smcv
+  * Improve templates testing.
+    Thanks, smcv
+  * python proxy: Avoid utf-8 related crash.
+    Thanks, Antoine Beaupré
+  * Special thanks to Simon McVittie for being the patchmeister for this
+    release.
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 27 Feb 2014 11:55:35 -0400
+
+ikiwiki (3.20140125) unstable; urgency=medium
+
+  * inline: Allow overriding the title of the feed. Closes: #735123
+    Thanks, Christophe Rhodes
+  * osm: Escape name parameter. Closes: #731797
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 25 Jan 2014 16:40:32 -0400
+
 ikiwiki (3.20140102) unstable; urgency=low
 
   * aggregate: Improve display of post author.

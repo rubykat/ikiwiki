@@ -527,6 +527,14 @@ sub getsetup () {
 		safe => 0, # hooks into perl module internals
 		rebuild => 0,
 	},
+	useragent => {
+		type => "string",
+		default => undef,
+		example => "Wget/1.13.4 (linux-gnu)",
+		description => "set custom user agent string for outbound HTTP requests e.g. when fetching aggregated RSS feeds",
+		safe => 0,
+		rebuild => 0,
+	},
 }
 
 sub defaultconfig () {
@@ -735,6 +743,7 @@ sub debug ($) {
 }
 
 my $log_open=0;
+my $log_failed=0;
 sub log_message ($$) {
 	my $type=shift;
 
@@ -748,9 +757,18 @@ sub log_message ($$) {
 			Sys::Syslog::openlog('ikiwiki', '', 'user');
 			$log_open=1;
 		}
-		return eval {
-			Sys::Syslog::syslog($type, "[$config{wikiname}] %s", join(" ", @_));
+		eval {
+			# keep a copy to avoid editing the original config repeatedly
+			my $wikiname = $config{wikiname};
+			utf8::encode($wikiname);
+			Sys::Syslog::syslog($type, "[$wikiname] %s", join(" ", @_));
 		};
+                if ($@) {
+                    print STDERR "failed to syslog: $@" unless $log_failed;
+                    $log_failed=1;
+                    print STDERR "@_\n";
+                }
+                return $@;
 	}
 	elsif (! $config{cgi}) {
 		return print "[$logtimestamp] @_\n";
@@ -1493,7 +1511,7 @@ sub preprocess ($$$;$$) {
 					push @params, $val, '';
 				}
 			}
-			if ($preprocessing{$page}++ > 3) {
+			if ($preprocessing{$page}++ > 8) {
 				# Avoid loops of preprocessed pages preprocessing
 				# other pages that preprocess them, etc.
 				return "[[!$command <span class=\"error\">".
@@ -2304,6 +2322,7 @@ sub useragent () {
 	return LWP::UserAgent->new(
 		cookie_jar => $config{cookiejar},
 		env_proxy => 1,		# respect proxy env vars
+		agent => $config{useragent},
 	);
 }
 
