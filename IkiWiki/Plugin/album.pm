@@ -1,7 +1,10 @@
 #!/usr/bin/perl
 # Copyright © 2009-2011 Simon McVittie <http://smcv.pseudorandom.co.uk/>
+# Copyright © 2013 Lukas Lipavsky <lukas@lipavsky.cz>
+#
 # Licensed under the GNU GPL, version 2, or any later version published by the
 # Free Software Foundation
+#
 package IkiWiki::Plugin::album;
 
 use warnings;
@@ -25,6 +28,7 @@ sub import {
 	IkiWiki::loadplugin("inline");
 	IkiWiki::loadplugin("trail");
 	IkiWiki::loadplugin("transient");
+	IkiWiki::loadplugin("tag");
 }
 
 sub getsetup () {
@@ -61,6 +65,7 @@ sub getsetup () {
 # sort - as for inline
 # sections - ref to array of pagespecs representing sections
 # viewers - list of viewers' names
+# tags - list of tags that should be added to viewers
 #
 # Page state for image viewers:
 #
@@ -123,6 +128,7 @@ sub show_in_album {
 		actions => "no",
 		feeds => "no",
 		template => "albumitem",
+		show => 0,
 		%params);
 }
 
@@ -297,7 +303,7 @@ sub collect_images {
 	}
 
 	my %sections;
-	my $_; # localize iterator variable
+	local $_; # localize iterator variable
 
 	my @remaining = @{$pagestate{$album}{album}{viewers}};
 
@@ -342,6 +348,7 @@ sub preprocess_album {
 	my $album = $params{page};
 
 	my @viewers = scan_images($album);
+	my $tags = defined($params{tag}) ? $params{tag} : "";
 
 	# placeholder for the "remaining images" section
 	push @{$pagestate{$album}{album}{sections}}, ""
@@ -356,6 +363,7 @@ sub preprocess_album {
 		nexttemplate => $params{nexttemplate},
 		prevtemplate => $params{prevtemplate},
 		viewers => [@viewers],
+		tags => [split(' ', $tags)],
 		# in the render phase, we want to keep the sections that we
 		# accumulated during the scan phase, if any
 		sections => $pagestate{$album}{album}{sections},
@@ -398,7 +406,7 @@ sub preprocess_albumsection {
 	my %params=@_;
 	my $album = $params{page};
 	my $filter = $params{filter};
-	my $_;
+	local $_;
 
 	# remember the filter for this section so the "remaining images" section
 	# won't include these images (this needs to be run in the scan stage
@@ -513,6 +521,13 @@ sub preprocess_albumimage {
 		$img = htmllink($viewer, $params{destpage}, "/$image");
 	}
 
+	# Tags (always return "")
+	IkiWiki::Plugin::tag::preprocess_tag(
+		page => $viewer,
+		destpage => $params{destpage},
+		map { ($_ => 1) } @{$pagestate{$album}{album}{tags}},
+	);
+
 	my $viewertemplate = template(
 		$pagestate{$album}{album}{viewertemplate} or
 		'albumviewer.tmpl');
@@ -541,7 +556,7 @@ sub pagetemplate (@) {
 		my $viewer = $params{page};
 		my $album = $pagestate{$viewer}{album}{album};
 		my $image = $pagestate{$viewer}{album}{image};
-                my $thumbnailsize = $pagestate{$album}{album}{thumbnailsize};
+		my $thumbnailsize = $pagestate{$album}{album}{thumbnailsize};
 
 		return unless defined $album;
 		return unless defined $image;
