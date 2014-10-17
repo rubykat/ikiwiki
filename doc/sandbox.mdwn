@@ -7,6 +7,10 @@ hello world (right back at ya)
 
 test, is it being saved? Probably. I will check. This seems really straightforward.
 
+~~~
+pre formated text?
+~~~
+
 > This is a blockquote.
 >
 > This is the first level of quoting.
@@ -96,7 +100,7 @@ This is an email link:
 Send Mail</a>
 </p>
 
-This is some preformatted text.  Each line is proceeded by four spaces.
+What follows is some preformatted text.  Each line is proceeded by four spaces.
 
     Test
 
@@ -115,4 +119,5 @@ Räksmörgås.
 
 `pre?`
 
+Testing. Test. 試験として書き込みします。
 

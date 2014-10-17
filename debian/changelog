@@ -1,3 +1,83 @@
+ikiwiki (3.20141016) unstable; urgency=medium
+
+  [ Joey Hess ]
+  * Fix crash that can occur when only_committed_changes is set and a
+    file is deleted from the underlay.
+
+  [ Simon McVittie ]
+  * core: avoid dangerous use of CGI->param in list context, which led
+    to a security flaw in Bugzilla; as far as we can tell, ikiwiki
+    is not vulnerable to a similar attack, but it's best to be safe
+  * core: new reverse_proxy option prevents ikiwiki from trying to detect
+    how to make self-referential URLs by using the CGI environment variables,
+    for instance when it's deployed behind a HTTP reverse proxy
+    (Closes: #745759)
+  * core: the default User-Agent is now "ikiwiki/$version" to work around
+    ModSecurity rules assuming that only malware uses libwww-perl
+  * core: use protocol-relative URLs (e.g. //www.example.com/wiki) so that
+    https stays on https and http stays on http, particularly if the
+    html5 option is enabled
+  * core: avoid mixed content when a https cgiurl links to http static pages
+    on the same server (the static pages are assumed to be accessible via
+    https too)
+  * core: force the correct top URL in w3mmode
+  * google plugin: Use search form
+  * docwiki: replace Paypal and Flattr buttons with text links
+  * comments: don't record the IP address in the wiki if the user is
+    logged in via passwordauth or httpauth
+  * templates: add ARIA roles to some page elements, if html5 is enabled.
+    Thanks, Patrick
+  * debian: build-depend on libmagickcore-6.q16-2-extra | libmagickcore-extra
+    so we can thumbnail SVGs in the docwiki
+  * debian: explicitly depend and build-depend on libcgi-pm-perl
+  * debian: drop unused python-support dependency
+  * debian: rename debian/link to debian/links so the intended symlinks appear
+  * debian: fix some wrong paths in the copyright file
+
+ -- Simon McVittie <smcv@debian.org>  Thu, 16 Oct 2014 23:28:26 +0100
+
+ikiwiki (3.20140916) unstable; urgency=low
+
+  * Don't double-decode CGI submissions with Encode.pm >= 2.53,
+    fixing "Error: Cannot decode string with wide characters".
+    Thanks, Antoine Beaupré
+  * Avoid making trails depend on everything in the wiki by giving them
+    a better way to sort the pages
+  * Don't let users post comments that won't be displayed
+  * Fix encoding of Unicode strings in Python plugins.
+    Thanks, chrysn
+  * Improve performance and correctness of the [[!if]] directive
+  * Let [[!inline rootpage=foo postform=no]] disable the posting form
+  * Switch default [[!man]] shortcut to manpages.debian.org. Closes: #700322
+  * Add UUID and TIME variables to edittemplate. Closes: #752827
+    Thanks, Jonathon Anderson
+  * Display pages in linkmaps as their pagetitle (no underscore escapes).
+    Thanks, chrysn
+  * Fix aspect ratio when scaling small images, and add support for
+    converting SVG and PDF graphics to PNG.
+    Thanks, chrysn
+    - suggest ghostscript (required for PDF-to-PNG thumbnailing)
+      and libmagickcore-extra (required for SVG-to-PNG thumbnailing)
+    - build-depend on ghostscript so the test for scalable images can be run
+  * In the CGI wrapper, incorporate $config{ENV} into the environment
+    before executing Perl code, so that PERL5LIB can point to a
+    non-system-wide installation of IkiWiki.
+    Thanks, Lafayette Chamber Singers Webmaster
+  * filecheck: accept MIME types not containing ';'
+  * autoindex: index files in underlays if the resulting pages aren't
+    going to be committed. Closes: #611068
+  * Add [[!templatebody]] directive so template pages don't have to be
+    simultaneously a valid template and valid HTML
+  * Add myself to Uploaders and release to Debian
+
+ -- Simon McVittie <smcv@debian.org>  Fri, 12 Sep 2014 21:23:58 +0100
+
+ikiwiki (3.20140831) unstable; urgency=medium
+
+  * Make --no-gettime work in initial build. Closes: #755075
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 31 Aug 2014 14:17:24 -0700
+
 ikiwiki (3.20140815) unstable; urgency=medium
 
   * Add google back to openid selector. Apparently this has gotten a stay

@@ -119,7 +119,9 @@ sub validate ($$$;$) {
 	my $claimed_identity = $csr->claimed_identity($openid_url);
 	if (! $claimed_identity) {
 		if ($errhandler) {
-			$errhandler->($csr->err);
+			if (ref($errhandler) eq 'CODE') {
+				$errhandler->($csr->err);
+			}
 			return 0;
 		}
 		else {
@@ -223,7 +225,7 @@ sub auth ($$) {
 	}
 	elsif (defined $q->param('openid_identifier')) {
 		# myopenid.com affiliate support
-		validate($q, $session, $q->param('openid_identifier'));
+		validate($q, $session, scalar $q->param('openid_identifier'));
 	}
 }
 
