@@ -84,16 +84,18 @@ sub preprocess (@) {
 	}
 
 	my ($dwidth, $dheight);
+        my $flag = '';
 
 	if ($params{size} eq 'full') {
 		$dwidth = $im->Get("width");
 		$dheight = $im->Get("height");
 	} else {
-		my ($w, $h, $flag) = ($params{size} =~ /^(\d*)x(\d*)(.?)$/);
+		my ($w, $h, $f) = ($params{size} =~ /^(\d*)x(\d*)(.?)$/);
 		error sprintf(gettext('wrong size format "%s" (should be WxH)'), $params{size})
 			unless (defined $w && defined $h &&
 			        (length $w || length $h));
 
+                $flag = $f;
 		if ($im->Get("width") == 0 || $im->Get("height") == 0) {
 			($dwidth, $dheight)=(0, 0);
 		} elsif (! length $w || (length $h && $im->Get("height")*$w > $h * $im->Get("width"))) {
