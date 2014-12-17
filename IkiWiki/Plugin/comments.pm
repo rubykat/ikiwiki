@@ -513,7 +513,6 @@ sub editcomment ($$) {
 		$subject = "comment ".(num_comments($page, $config{srcdir}) + 1);
 	}
 	$content .= " subject=\"$subject\"\n";
-<<<<<<< HEAD
 
 	if ($config{comments_allowdate})
 	{

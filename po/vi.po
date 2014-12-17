@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ikiwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-20 12:26-0400\n"
+"POT-Creation-Date: 2014-12-18 10:53+1100\n"
 "PO-Revision-Date: 2007-01-13 15:31+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -17,42 +17,42 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: LocFactoryEditor 1.6fc1\n"
 
-#: ../IkiWiki/CGI.pm:230
+#: ../IkiWiki/CGI.pm:224
 msgid ""
 "probable misconfiguration: sslcookie is set, but you are attempting to login "
 "via http, not https"
 msgstr ""
 
-#: ../IkiWiki/CGI.pm:233
+#: ../IkiWiki/CGI.pm:227
 msgid "login failed, perhaps you need to turn on cookies?"
 msgstr ""
 
-#: ../IkiWiki/CGI.pm:252 ../IkiWiki/CGI.pm:404
+#: ../IkiWiki/CGI.pm:246 ../IkiWiki/CGI.pm:398
 msgid "Your login session has expired."
 msgstr ""
 
-#: ../IkiWiki/CGI.pm:273
+#: ../IkiWiki/CGI.pm:267
 msgid "Login"
 msgstr ""
 
-#: ../IkiWiki/CGI.pm:274
+#: ../IkiWiki/CGI.pm:268
 #, fuzzy
 msgid "Preferences"
 msgstr "Tùy thích đã được lưu."
 
-#: ../IkiWiki/CGI.pm:275
+#: ../IkiWiki/CGI.pm:269
 msgid "Admin"
 msgstr ""
 
-#: ../IkiWiki/CGI.pm:315
+#: ../IkiWiki/CGI.pm:309
 msgid "Preferences saved."
 msgstr "Tùy thích đã được lưu."
 
-#: ../IkiWiki/CGI.pm:367
+#: ../IkiWiki/CGI.pm:361
 msgid "You are banned."
 msgstr "Bạn bị cấm ra."
 
-#: ../IkiWiki/CGI.pm:495 ../IkiWiki/CGI.pm:496 ../IkiWiki.pm:1574
+#: ../IkiWiki/CGI.pm:489 ../IkiWiki/CGI.pm:490 ../IkiWiki.pm:1605
 msgid "Error"
 msgstr "Lỗi"
 
@@ -135,6 +135,16 @@ msgstr "đang tạo trang mới %s"
 msgid "failed to process template:"
 msgstr "mẫu không xử lý được:"
 
+#: ../IkiWiki/Plugin/album.pm:150
+#, fuzzy, perl-format
+msgid "creating album page %s"
+msgstr "đang tạo trang mới %s"
+
+#: ../IkiWiki/Plugin/album.pm:437
+#, perl-format
+msgid "%s is not in any album"
+msgstr ""
+
 #: ../IkiWiki/Plugin/amazon_s3.pm:31
 msgid "deleting bucket.."
 msgstr ""
@@ -208,6 +218,21 @@ msgstr ""
 msgid "There are no broken links!"
 msgstr "Không có liên kết bị ngắt nào."
 
+#: ../IkiWiki/Plugin/calendar.pm:115 ../IkiWiki/Plugin/calendar.pm:117
+#, perl-format
+msgid "building calendar for %s, its previous or next year has changed"
+msgstr ""
+
+#: ../IkiWiki/Plugin/calendar.pm:120 ../IkiWiki/Plugin/calendar.pm:122
+#, perl-format
+msgid "building calendar for %s/%s, its previous or next month has changed"
+msgstr ""
+
+#: ../IkiWiki/Plugin/calendar.pm:131
+#, fuzzy, perl-format
+msgid "creating calendar page %s"
+msgstr "đang tạo trang mới %s"
+
 #: ../IkiWiki/Plugin/comments.pm:128
 #, fuzzy, perl-format
 msgid "this comment needs %s"
@@ -234,66 +259,66 @@ msgstr ""
 msgid "Comment Moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:379 ../IkiWiki/Plugin/comments.pm:383
+#: ../IkiWiki/Plugin/comments.pm:384 ../IkiWiki/Plugin/comments.pm:388
 msgid "email replies to me"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:417 ../IkiWiki/Plugin/editpage.pm:96
+#: ../IkiWiki/Plugin/comments.pm:423 ../IkiWiki/Plugin/editpage.pm:96
 #: ../IkiWiki/Plugin/editpage.pm:102
 msgid "bad page name"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:420
+#: ../IkiWiki/Plugin/comments.pm:426
 #, fuzzy, perl-format
 msgid "commenting on %s"
 msgstr "đang tạo %s"
 
-#: ../IkiWiki/Plugin/comments.pm:437
+#: ../IkiWiki/Plugin/comments.pm:443
 #, perl-format
 msgid "page '%s' doesn't exist, so you can't comment"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:447
+#: ../IkiWiki/Plugin/comments.pm:453
 #, perl-format
 msgid "comments on page '%s' are not allowed"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:454
+#: ../IkiWiki/Plugin/comments.pm:460
 #, perl-format
 msgid "comments on page '%s' are closed"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:581
+#: ../IkiWiki/Plugin/comments.pm:604
 msgid "comment stored for moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:583
+#: ../IkiWiki/Plugin/comments.pm:606
 msgid "Your comment will be posted after moderator review"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:596
+#: ../IkiWiki/Plugin/comments.pm:619
 msgid "Added a comment"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:600
+#: ../IkiWiki/Plugin/comments.pm:623
 #, perl-format
 msgid "Added a comment: %s"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:674 ../IkiWiki/Plugin/userlist.pm:55
+#: ../IkiWiki/Plugin/comments.pm:697 ../IkiWiki/Plugin/userlist.pm:55
 #: ../IkiWiki/Plugin/websetup.pm:272
 msgid "you are not logged in as an admin"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:733
+#: ../IkiWiki/Plugin/comments.pm:756
 msgid "Comment moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:774
+#: ../IkiWiki/Plugin/comments.pm:797
 msgid "comment moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:937
+#: ../IkiWiki/Plugin/comments.pm:960
 #, perl-format
 msgid "%i comment"
 msgid_plural "%i comments"
@@ -302,7 +327,7 @@ msgstr[0] ""
 #. translators: Here "Comment" is a verb;
 #. translators: the user clicks on it to
 #. translators: post a comment.
-#: ../IkiWiki/Plugin/comments.pm:947
+#: ../IkiWiki/Plugin/comments.pm:970
 msgid "Comment"
 msgstr ""
 
@@ -392,7 +417,7 @@ msgid "%s is an attachment, not a page."
 msgstr ""
 
 #: ../IkiWiki/Plugin/git.pm:839 ../IkiWiki/Plugin/git.pm:902
-#: ../IkiWiki.pm:1794
+#: ../IkiWiki.pm:1825
 #, perl-format
 msgid "you are not allowed to change %s"
 msgstr ""
@@ -454,7 +479,7 @@ msgstr "lỗi phân tách hình cười nào nên tắt bổ sung"
 msgid "Image::Magick is not installed"
 msgstr "chưa cài đặt polygen"
 
-#: ../IkiWiki/Plugin/img.pm:80 ../IkiWiki/Plugin/img.pm:125
+#: ../IkiWiki/Plugin/img.pm:80 ../IkiWiki/Plugin/img.pm:127
 #, fuzzy, perl-format
 msgid "failed to read %s: %s"
 msgstr "lỗi ghi %s: %s"
@@ -464,17 +489,17 @@ msgstr "lỗi ghi %s: %s"
 msgid "failed to get dimensions of %s"
 msgstr "lỗi ghi %s: %s"
 
-#: ../IkiWiki/Plugin/img.pm:93
+#: ../IkiWiki/Plugin/img.pm:94
 #, perl-format
 msgid "wrong size format \"%s\" (should be WxH)"
 msgstr ""
 
-#: ../IkiWiki/Plugin/img.pm:129
+#: ../IkiWiki/Plugin/img.pm:131
 #, fuzzy, perl-format
 msgid "failed to resize: %s"
 msgstr "lỗi ghi %s: %s"
 
-#: ../IkiWiki/Plugin/img.pm:154
+#: ../IkiWiki/Plugin/img.pm:156
 #, fuzzy, perl-format
 msgid "failed to determine size of image %s"
 msgstr "lỗi ghi %s: %s"
@@ -614,7 +639,17 @@ msgstr "lỗi biên dịch %s"
 msgid "All pages have other pages linking to them."
 msgstr "Mọi trang được liên kết với trang khác."
 
-#: ../IkiWiki/Plugin/pagetemplate.pm:30
+#: ../IkiWiki/Plugin/pagetemplate.pm:44
+#, perl-format
+msgid "pagetemplate_matching: bad or missing template '%s'"
+msgstr ""
+
+#: ../IkiWiki/Plugin/pagetemplate.pm:48
+#, perl-format
+msgid "pagetemplate_matching: invalid pagespec '%s' for template '%s'"
+msgstr ""
+
+#: ../IkiWiki/Plugin/pagetemplate.pm:60
 msgid "bad or missing template"
 msgstr ""
 
@@ -1165,64 +1200,64 @@ msgstr ""
 msgid "cannot determine id of untrusted committer %s"
 msgstr ""
 
-#: ../IkiWiki/Render.pm:160
+#: ../IkiWiki/Render.pm:161
 #, perl-format
 msgid "scanning %s"
 msgstr "đang quét %s"
 
-#: ../IkiWiki/Render.pm:283
+#: ../IkiWiki/Render.pm:284
 #, perl-format
 msgid ""
 "symlink found in srcdir path (%s) -- set allow_symlinks_before_srcdir to "
 "allow this"
 msgstr ""
 
-#: ../IkiWiki/Render.pm:334 ../IkiWiki/Render.pm:395
+#: ../IkiWiki/Render.pm:335 ../IkiWiki/Render.pm:397
 #, perl-format
 msgid "skipping bad filename %s"
 msgstr "đang bỏ qua tên tập tin sai %s"
 
-#: ../IkiWiki/Render.pm:351 ../IkiWiki/Render.pm:400
+#: ../IkiWiki/Render.pm:352 ../IkiWiki/Render.pm:402
 #, perl-format
 msgid "%s has multiple possible source pages"
 msgstr ""
 
-#: ../IkiWiki/Render.pm:437
+#: ../IkiWiki/Render.pm:439
 #, perl-format
 msgid "querying %s for file creation and modification times.."
 msgstr ""
 
-#: ../IkiWiki/Render.pm:512
+#: ../IkiWiki/Render.pm:514
 #, fuzzy, perl-format
 msgid "removing obsolete %s"
 msgstr "đang gỡ bỏ trang cũ %s"
 
-#: ../IkiWiki/Render.pm:597
+#: ../IkiWiki/Render.pm:599
 #, fuzzy, perl-format
 msgid "building %s, which links to %s"
 msgstr "đang vẽ %s mà liên kết tới %s"
 
-#: ../IkiWiki/Render.pm:606
+#: ../IkiWiki/Render.pm:608
 #, fuzzy, perl-format
 msgid "removing %s, no longer built by %s"
 msgstr "đang gỡ bỏ %s, không còn được vẽ lại bởi %s"
 
-#: ../IkiWiki/Render.pm:689 ../IkiWiki/Render.pm:771
+#: ../IkiWiki/Render.pm:691 ../IkiWiki/Render.pm:773
 #, fuzzy, perl-format
 msgid "building %s, which depends on %s"
 msgstr "đang vẽ %s mà phụ thuộc vào %s"
 
-#: ../IkiWiki/Render.pm:784
+#: ../IkiWiki/Render.pm:786
 #, fuzzy, perl-format
 msgid "building %s, to update its backlinks"
 msgstr "đang vẽ %s để cập nhật các liên kết ngược của nó"
 
-#: ../IkiWiki/Render.pm:895
+#: ../IkiWiki/Render.pm:897
 #, fuzzy, perl-format
 msgid "building %s"
 msgstr "đang sửa %s"
 
-#: ../IkiWiki/Render.pm:964
+#: ../IkiWiki/Render.pm:966
 #, fuzzy, perl-format
 msgid "ikiwiki: cannot build %s"
 msgstr "ikiwiki: không thể vẽ %s"
@@ -1319,59 +1354,59 @@ msgstr "đang xây dựng lại wiki.."
 msgid "refreshing wiki.."
 msgstr "đang làm tươi wiki.."
 
-#: ../IkiWiki.pm:269
+#: ../IkiWiki.pm:270
 msgid "Discussion"
 msgstr "Thảo luận"
 
-#: ../IkiWiki.pm:609
+#: ../IkiWiki.pm:637
 msgid "Must specify url to wiki with --url when using --cgi"
 msgstr ""
 "Cần phải xác định địa chỉ URL tới wiki với « --url » khi dùng « --cgi »"
 
-#: ../IkiWiki.pm:684
+#: ../IkiWiki.pm:712
 #, perl-format
 msgid "unsupported umask setting %s"
 msgstr ""
 
-#: ../IkiWiki.pm:724
+#: ../IkiWiki.pm:752
 msgid "cannot use multiple rcs plugins"
 msgstr ""
 
-#: ../IkiWiki.pm:754
+#: ../IkiWiki.pm:782
 #, perl-format
 msgid "failed to load external plugin needed for %s plugin: %s"
 msgstr ""
 
-#: ../IkiWiki.pm:1556
+#: ../IkiWiki.pm:1587
 #, fuzzy, perl-format
 msgid "preprocessing loop detected on %s at depth %i"
 msgstr "vòng lặp tiền xử lý %s được phát hiện trên %s ở độ sâu %i"
 
-#: ../IkiWiki.pm:1750
+#: ../IkiWiki.pm:1781
 #, fuzzy, perl-format
 msgid "bad file name %s"
 msgstr "đang bỏ qua tên tập tin sai %s"
 
-#: ../IkiWiki.pm:2060
+#: ../IkiWiki.pm:2094
 #, perl-format
 msgid "template %s not found"
 msgstr "không tìm thấy mẫu %s"
 
-#: ../IkiWiki.pm:2318
+#: ../IkiWiki.pm:2352
 msgid "yes"
 msgstr ""
 
-#: ../IkiWiki.pm:2403
+#: ../IkiWiki.pm:2437
 #, fuzzy, perl-format
 msgid "invalid sort type %s"
 msgstr "kiểu sắp xếp không rõ %s"
 
-#: ../IkiWiki.pm:2424
+#: ../IkiWiki.pm:2458
 #, perl-format
 msgid "unknown sort type %s"
 msgstr "kiểu sắp xếp không rõ %s"
 
-#: ../IkiWiki.pm:2573
+#: ../IkiWiki.pm:2607
 #, fuzzy, perl-format
 msgid "cannot match pages: %s"
 msgstr "không thể đọc %s: %s"

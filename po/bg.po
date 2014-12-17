@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ikiwiki-bg\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-20 12:26-0400\n"
+"POT-Creation-Date: 2014-12-18 10:53+1100\n"
 "PO-Revision-Date: 2007-01-12 01:19+0200\n"
 "Last-Translator: Damyan Ivanov <dam@modsodtsys.com>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -17,42 +17,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../IkiWiki/CGI.pm:230
+#: ../IkiWiki/CGI.pm:224
 msgid ""
 "probable misconfiguration: sslcookie is set, but you are attempting to login "
 "via http, not https"
 msgstr ""
 
-#: ../IkiWiki/CGI.pm:233
+#: ../IkiWiki/CGI.pm:227
 msgid "login failed, perhaps you need to turn on cookies?"
 msgstr ""
 
-#: ../IkiWiki/CGI.pm:252 ../IkiWiki/CGI.pm:404
+#: ../IkiWiki/CGI.pm:246 ../IkiWiki/CGI.pm:398
 msgid "Your login session has expired."
 msgstr ""
 
-#: ../IkiWiki/CGI.pm:273
+#: ../IkiWiki/CGI.pm:267
 msgid "Login"
 msgstr ""
 
-#: ../IkiWiki/CGI.pm:274
+#: ../IkiWiki/CGI.pm:268
 #, fuzzy
 msgid "Preferences"
 msgstr "Предпочитанията са запазени."
 
-#: ../IkiWiki/CGI.pm:275
+#: ../IkiWiki/CGI.pm:269
 msgid "Admin"
 msgstr ""
 
-#: ../IkiWiki/CGI.pm:315
+#: ../IkiWiki/CGI.pm:309
 msgid "Preferences saved."
 msgstr "Предпочитанията са запазени."
 
-#: ../IkiWiki/CGI.pm:367
+#: ../IkiWiki/CGI.pm:361
 msgid "You are banned."
 msgstr "Достъпът ви е забранен."
 
-#: ../IkiWiki/CGI.pm:495 ../IkiWiki/CGI.pm:496 ../IkiWiki.pm:1574
+#: ../IkiWiki/CGI.pm:489 ../IkiWiki/CGI.pm:490 ../IkiWiki.pm:1605
 msgid "Error"
 msgstr "Грешка"
 
@@ -135,6 +135,16 @@ msgstr "създаване на нова страницa „%s”"
 msgid "failed to process template:"
 msgstr "грешка при обработване на шаблона"
 
+#: ../IkiWiki/Plugin/album.pm:150
+#, fuzzy, perl-format
+msgid "creating album page %s"
+msgstr "създаване на нова страницa „%s”"
+
+#: ../IkiWiki/Plugin/album.pm:437
+#, perl-format
+msgid "%s is not in any album"
+msgstr ""
+
 #: ../IkiWiki/Plugin/amazon_s3.pm:31
 msgid "deleting bucket.."
 msgstr ""
@@ -208,6 +218,21 @@ msgstr ""
 msgid "There are no broken links!"
 msgstr "Няма „счупени” връзки!"
 
+#: ../IkiWiki/Plugin/calendar.pm:115 ../IkiWiki/Plugin/calendar.pm:117
+#, perl-format
+msgid "building calendar for %s, its previous or next year has changed"
+msgstr ""
+
+#: ../IkiWiki/Plugin/calendar.pm:120 ../IkiWiki/Plugin/calendar.pm:122
+#, perl-format
+msgid "building calendar for %s/%s, its previous or next month has changed"
+msgstr ""
+
+#: ../IkiWiki/Plugin/calendar.pm:131
+#, fuzzy, perl-format
+msgid "creating calendar page %s"
+msgstr "създаване на нова страницa „%s”"
+
 #: ../IkiWiki/Plugin/comments.pm:128
 #, fuzzy, perl-format
 msgid "this comment needs %s"
@@ -234,66 +259,66 @@ msgstr ""
 msgid "Comment Moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:379 ../IkiWiki/Plugin/comments.pm:383
+#: ../IkiWiki/Plugin/comments.pm:384 ../IkiWiki/Plugin/comments.pm:388
 msgid "email replies to me"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:417 ../IkiWiki/Plugin/editpage.pm:96
+#: ../IkiWiki/Plugin/comments.pm:423 ../IkiWiki/Plugin/editpage.pm:96
 #: ../IkiWiki/Plugin/editpage.pm:102
 msgid "bad page name"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:420
+#: ../IkiWiki/Plugin/comments.pm:426
 #, fuzzy, perl-format
 msgid "commenting on %s"
 msgstr "създаване на %s"
 
-#: ../IkiWiki/Plugin/comments.pm:437
+#: ../IkiWiki/Plugin/comments.pm:443
 #, perl-format
 msgid "page '%s' doesn't exist, so you can't comment"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:447
+#: ../IkiWiki/Plugin/comments.pm:453
 #, perl-format
 msgid "comments on page '%s' are not allowed"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:454
+#: ../IkiWiki/Plugin/comments.pm:460
 #, perl-format
 msgid "comments on page '%s' are closed"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:581
+#: ../IkiWiki/Plugin/comments.pm:604
 msgid "comment stored for moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:583
+#: ../IkiWiki/Plugin/comments.pm:606
 msgid "Your comment will be posted after moderator review"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:596
+#: ../IkiWiki/Plugin/comments.pm:619
 msgid "Added a comment"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:600
+#: ../IkiWiki/Plugin/comments.pm:623
 #, perl-format
 msgid "Added a comment: %s"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:674 ../IkiWiki/Plugin/userlist.pm:55
+#: ../IkiWiki/Plugin/comments.pm:697 ../IkiWiki/Plugin/userlist.pm:55
 #: ../IkiWiki/Plugin/websetup.pm:272
 msgid "you are not logged in as an admin"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:733
+#: ../IkiWiki/Plugin/comments.pm:756
 msgid "Comment moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:774
+#: ../IkiWiki/Plugin/comments.pm:797
 msgid "comment moderation"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:937
+#: ../IkiWiki/Plugin/comments.pm:960
 #, perl-format
 msgid "%i comment"
 msgid_plural "%i comments"
@@ -303,7 +328,7 @@ msgstr[1] ""
 #. translators: Here "Comment" is a verb;
 #. translators: the user clicks on it to
 #. translators: post a comment.
-#: ../IkiWiki/Plugin/comments.pm:947
+#: ../IkiWiki/Plugin/comments.pm:970
 msgid "Comment"
 msgstr ""
 
@@ -393,7 +418,7 @@ msgid "%s is an attachment, not a page."
 msgstr ""
 
 #: ../IkiWiki/Plugin/git.pm:839 ../IkiWiki/Plugin/git.pm:902
-#: ../IkiWiki.pm:1794
+#: ../IkiWiki.pm:1825
 #, perl-format
 msgid "you are not allowed to change %s"
 msgstr ""
@@ -455,7 +480,7 @@ msgstr "няма разпознати усмивки; изключване на 
 msgid "Image::Magick is not installed"
 msgstr "не е инсталиран polygen"
 
-#: ../IkiWiki/Plugin/img.pm:80 ../IkiWiki/Plugin/img.pm:125
+#: ../IkiWiki/Plugin/img.pm:80 ../IkiWiki/Plugin/img.pm:127
 #, fuzzy, perl-format
 msgid "failed to read %s: %s"
 msgstr "грешка при запис на файла „%s”: %s"
@@ -465,17 +490,17 @@ msgstr "грешка при запис на файла „%s”: %s"
 msgid "failed to get dimensions of %s"
 msgstr "грешка при запис на файла „%s”: %s"
 
-#: ../IkiWiki/Plugin/img.pm:93
+#: ../IkiWiki/Plugin/img.pm:94
 #, perl-format
 msgid "wrong size format \"%s\" (should be WxH)"
 msgstr ""
 
-#: ../IkiWiki/Plugin/img.pm:129
+#: ../IkiWiki/Plugin/img.pm:131
 #, fuzzy, perl-format
 msgid "failed to resize: %s"
 msgstr "грешка при запис на файла „%s”: %s"
 
-#: ../IkiWiki/Plugin/img.pm:154
+#: ../IkiWiki/Plugin/img.pm:156
 #, fuzzy, perl-format
 msgid "failed to determine size of image %s"
 msgstr "грешка при запис на файла „%s”: %s"
@@ -618,7 +643,17 @@ msgstr "крешка при компилиране на файла %s"
 msgid "All pages have other pages linking to them."
 msgstr "Всички страници имат връзки от други страници."
 
-#: ../IkiWiki/Plugin/pagetemplate.pm:30
+#: ../IkiWiki/Plugin/pagetemplate.pm:44
+#, perl-format
+msgid "pagetemplate_matching: bad or missing template '%s'"
+msgstr ""
+
+#: ../IkiWiki/Plugin/pagetemplate.pm:48
+#, perl-format
+msgid "pagetemplate_matching: invalid pagespec '%s' for template '%s'"
+msgstr ""
+
+#: ../IkiWiki/Plugin/pagetemplate.pm:60
 msgid "bad or missing template"
 msgstr ""
 
@@ -1170,64 +1205,64 @@ msgstr ""
 msgid "cannot determine id of untrusted committer %s"
 msgstr ""
 
-#: ../IkiWiki/Render.pm:160
+#: ../IkiWiki/Render.pm:161
 #, perl-format
 msgid "scanning %s"
 msgstr "сканиране на „%s”"
 
-#: ../IkiWiki/Render.pm:283
+#: ../IkiWiki/Render.pm:284
 #, perl-format
 msgid ""
 "symlink found in srcdir path (%s) -- set allow_symlinks_before_srcdir to "
 "allow this"
 msgstr ""
 
-#: ../IkiWiki/Render.pm:334 ../IkiWiki/Render.pm:395
+#: ../IkiWiki/Render.pm:335 ../IkiWiki/Render.pm:397
 #, perl-format
 msgid "skipping bad filename %s"
 msgstr "пропускане на невалидното име на файл „%s”"
 
-#: ../IkiWiki/Render.pm:351 ../IkiWiki/Render.pm:400
+#: ../IkiWiki/Render.pm:352 ../IkiWiki/Render.pm:402
 #, perl-format
 msgid "%s has multiple possible source pages"
 msgstr ""
 
-#: ../IkiWiki/Render.pm:437
+#: ../IkiWiki/Render.pm:439
 #, perl-format
 msgid "querying %s for file creation and modification times.."
 msgstr ""
 
-#: ../IkiWiki/Render.pm:512
+#: ../IkiWiki/Render.pm:514
 #, fuzzy, perl-format
 msgid "removing obsolete %s"
 msgstr "премахване на старата страница „%s”"
 
-#: ../IkiWiki/Render.pm:597
+#: ../IkiWiki/Render.pm:599
 #, fuzzy, perl-format
 msgid "building %s, which links to %s"
 msgstr "обновяване на страницата „%s”, съдържаща препратки към „%s”"
 
-#: ../IkiWiki/Render.pm:606
+#: ../IkiWiki/Render.pm:608
 #, fuzzy, perl-format
 msgid "removing %s, no longer built by %s"
 msgstr "премахване на „%s” понеже не се генерира от „%s”"
 
-#: ../IkiWiki/Render.pm:689 ../IkiWiki/Render.pm:771
+#: ../IkiWiki/Render.pm:691 ../IkiWiki/Render.pm:773
 #, fuzzy, perl-format
 msgid "building %s, which depends on %s"
 msgstr "обновяване на страницата „%s”, зависеща от „%s”"
 
-#: ../IkiWiki/Render.pm:784
+#: ../IkiWiki/Render.pm:786
 #, fuzzy, perl-format
 msgid "building %s, to update its backlinks"
 msgstr "обновяване на „%s” и осъвременяване на обратните връзки"
 
-#: ../IkiWiki/Render.pm:895
+#: ../IkiWiki/Render.pm:897
 #, fuzzy, perl-format
 msgid "building %s"
 msgstr "промяна на %s"
 
-#: ../IkiWiki/Render.pm:964
+#: ../IkiWiki/Render.pm:966
 #, fuzzy, perl-format
 msgid "ikiwiki: cannot build %s"
 msgstr "ikiwiki: неуспех при обновяване на страницата „%s”"
@@ -1324,60 +1359,60 @@ msgstr "обновяване на уики..."
 msgid "refreshing wiki.."
 msgstr "осъвременяване на уики..."
 
-#: ../IkiWiki.pm:269
+#: ../IkiWiki.pm:270
 msgid "Discussion"
 msgstr "Дискусия"
 
-#: ../IkiWiki.pm:609
+#: ../IkiWiki.pm:637
 msgid "Must specify url to wiki with --url when using --cgi"
 msgstr ""
 "При използване на пареметъра „--cgi” е необходимо да се укаже и "
 "местоположението на уикито чрез параметъра „--url”"
 
-#: ../IkiWiki.pm:684
+#: ../IkiWiki.pm:712
 #, perl-format
 msgid "unsupported umask setting %s"
 msgstr ""
 
-#: ../IkiWiki.pm:724
+#: ../IkiWiki.pm:752
 msgid "cannot use multiple rcs plugins"
 msgstr ""
 
-#: ../IkiWiki.pm:754
+#: ../IkiWiki.pm:782
 #, perl-format
 msgid "failed to load external plugin needed for %s plugin: %s"
 msgstr ""
 
-#: ../IkiWiki.pm:1556
+#: ../IkiWiki.pm:1587
 #, fuzzy, perl-format
 msgid "preprocessing loop detected on %s at depth %i"
 msgstr "открита е циклична завидимост при %s на „%s” на дълбочина %i"
 
-#: ../IkiWiki.pm:1750
+#: ../IkiWiki.pm:1781
 #, fuzzy, perl-format
 msgid "bad file name %s"
 msgstr "пропускане на невалидното име на файл „%s”"
 
-#: ../IkiWiki.pm:2060
+#: ../IkiWiki.pm:2094
 #, perl-format
 msgid "template %s not found"
 msgstr "шаблонът „%s” не е намерен"
 
-#: ../IkiWiki.pm:2318
+#: ../IkiWiki.pm:2352
 msgid "yes"
 msgstr ""
 
-#: ../IkiWiki.pm:2403
+#: ../IkiWiki.pm:2437
 #, fuzzy, perl-format
 msgid "invalid sort type %s"
 msgstr "непознат вид сортиране „%s”"
 
-#: ../IkiWiki.pm:2424
+#: ../IkiWiki.pm:2458
 #, perl-format
 msgid "unknown sort type %s"
 msgstr "непознат вид сортиране „%s”"
 
-#: ../IkiWiki.pm:2573
+#: ../IkiWiki.pm:2607
 #, fuzzy, perl-format
 msgid "cannot match pages: %s"
 msgstr "грешка при четене на „%s”: %s"

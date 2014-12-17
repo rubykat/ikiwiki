@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ikiwiki 3.20110430\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-20 12:26-0400\n"
+"POT-Creation-Date: 2014-12-18 10:53+1100\n"
 "PO-Revision-Date: 2011-05-05 13:30+0200\n"
 "Last-Translator: Jonas Smedegaard <dr@jones.dk>\n"
 "Language-Team: None\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-Country: DENMARK\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../IkiWiki/CGI.pm:230
+#: ../IkiWiki/CGI.pm:224
 msgid ""
 "probable misconfiguration: sslcookie is set, but you are attempting to login "
 "via http, not https"
@@ -28,35 +28,35 @@ msgstr ""
 "mulig opsætningsfejl: sslcookie er sat, men du forsøger at logge på via "
 "http, ikke https"
 
-#: ../IkiWiki/CGI.pm:233
+#: ../IkiWiki/CGI.pm:227
 msgid "login failed, perhaps you need to turn on cookies?"
 msgstr "Pålogning mislykkedes, måske skal du tillade infokager (cookies)?"
 
-#: ../IkiWiki/CGI.pm:252 ../IkiWiki/CGI.pm:404
+#: ../IkiWiki/CGI.pm:246 ../IkiWiki/CGI.pm:398
 msgid "Your login session has expired."
 msgstr "Din kørsel (login session) er udløbet"
 
-#: ../IkiWiki/CGI.pm:273
+#: ../IkiWiki/CGI.pm:267
 msgid "Login"
 msgstr "Pålogning"
 
-#: ../IkiWiki/CGI.pm:274
+#: ../IkiWiki/CGI.pm:268
 msgid "Preferences"
 msgstr "Indstillinger"
 
-#: ../IkiWiki/CGI.pm:275
+#: ../IkiWiki/CGI.pm:269
 msgid "Admin"
 msgstr "Admin"
 
-#: ../IkiWiki/CGI.pm:315
+#: ../IkiWiki/CGI.pm:309
 msgid "Preferences saved."
 msgstr "Indstillinger gemt"
 
-#: ../IkiWiki/CGI.pm:367
+#: ../IkiWiki/CGI.pm:361
 msgid "You are banned."
 msgstr "Du er banlyst."
 
-#: ../IkiWiki/CGI.pm:495 ../IkiWiki/CGI.pm:496 ../IkiWiki.pm:1574
+#: ../IkiWiki/CGI.pm:489 ../IkiWiki/CGI.pm:490 ../IkiWiki.pm:1605
 msgid "Error"
 msgstr "Fejl"
 
@@ -137,6 +137,16 @@ msgstr "opretter ny side %s"
 msgid "failed to process template:"
 msgstr "behandling af skabelon mislykkedes:"
 
+#: ../IkiWiki/Plugin/album.pm:150
+#, fuzzy, perl-format
+msgid "creating album page %s"
+msgstr "opretter mærkatside %s"
+
+#: ../IkiWiki/Plugin/album.pm:437
+#, fuzzy, perl-format
+msgid "%s is not in any album"
+msgstr "%s er ikke en fil"
+
 #: ../IkiWiki/Plugin/amazon_s3.pm:31
 msgid "deleting bucket.."
 msgstr "sletter bundt.."
@@ -210,6 +220,21 @@ msgstr "%s fra %s"
 msgid "There are no broken links!"
 msgstr "Ingen henvisninger der ikker fungerer!"
 
+#: ../IkiWiki/Plugin/calendar.pm:115 ../IkiWiki/Plugin/calendar.pm:117
+#, perl-format
+msgid "building calendar for %s, its previous or next year has changed"
+msgstr ""
+
+#: ../IkiWiki/Plugin/calendar.pm:120 ../IkiWiki/Plugin/calendar.pm:122
+#, perl-format
+msgid "building calendar for %s/%s, its previous or next month has changed"
+msgstr ""
+
+#: ../IkiWiki/Plugin/calendar.pm:131
+#, fuzzy, perl-format
+msgid "creating calendar page %s"
+msgstr "opretter indeks-side %s"
+
 #: ../IkiWiki/Plugin/comments.pm:128
 #, perl-format
 msgid "this comment needs %s"
@@ -236,66 +261,66 @@ msgstr "Anonym"
 msgid "Comment Moderation"
 msgstr "Kommentarmoderering"
 
-#: ../IkiWiki/Plugin/comments.pm:379 ../IkiWiki/Plugin/comments.pm:383
+#: ../IkiWiki/Plugin/comments.pm:384 ../IkiWiki/Plugin/comments.pm:388
 msgid "email replies to me"
 msgstr ""
 
-#: ../IkiWiki/Plugin/comments.pm:417 ../IkiWiki/Plugin/editpage.pm:96
+#: ../IkiWiki/Plugin/comments.pm:423 ../IkiWiki/Plugin/editpage.pm:96
 #: ../IkiWiki/Plugin/editpage.pm:102
 msgid "bad page name"
 msgstr "dårligt sidenavn"
 
-#: ../IkiWiki/Plugin/comments.pm:420
+#: ../IkiWiki/Plugin/comments.pm:426
 #, perl-format
 msgid "commenting on %s"
 msgstr "kommenterer på %s"
 
-#: ../IkiWiki/Plugin/comments.pm:437
+#: ../IkiWiki/Plugin/comments.pm:443
 #, perl-format
 msgid "page '%s' doesn't exist, so you can't comment"
 msgstr "siden '%s' eksisterer ikke, så du kan ikke kommentere"
 
-#: ../IkiWiki/Plugin/comments.pm:447
+#: ../IkiWiki/Plugin/comments.pm:453
 #, fuzzy, perl-format
 msgid "comments on page '%s' are not allowed"
 msgstr "kommentarer på side '%s' er lukket"
 
-#: ../IkiWiki/Plugin/comments.pm:454
+#: ../IkiWiki/Plugin/comments.pm:460
 #, perl-format
 msgid "comments on page '%s' are closed"
 msgstr "kommentarer på side '%s' er lukket"
 
-#: ../IkiWiki/Plugin/comments.pm:581
+#: ../IkiWiki/Plugin/comments.pm:604
 msgid "comment stored for moderation"
 msgstr "kommentar gemt for moderering"
 
-#: ../IkiWiki/Plugin/comments.pm:583
+#: ../IkiWiki/Plugin/comments.pm:606
 msgid "Your comment will be posted after moderator review"
 msgstr "Din kommentar vil blive tilføjet efter moderatorgenemsyn"
 
-#: ../IkiWiki/Plugin/comments.pm:596
+#: ../IkiWiki/Plugin/comments.pm:619
 msgid "Added a comment"
 msgstr "Tilføjede en kommentar"
 
-#: ../IkiWiki/Plugin/comments.pm:600
+#: ../IkiWiki/Plugin/comments.pm:623
 #, perl-format
 msgid "Added a comment: %s"
 msgstr "Tilføjede en kommentar: %s"
 
-#: ../IkiWiki/Plugin/comments.pm:674 ../IkiWiki/Plugin/userlist.pm:55
+#: ../IkiWiki/Plugin/comments.pm:697 ../IkiWiki/Plugin/userlist.pm:55
 #: ../IkiWiki/Plugin/websetup.pm:272
 msgid "you are not logged in as an admin"
 msgstr "du er ikke logget på som en administrator"
 
-#: ../IkiWiki/Plugin/comments.pm:733
+#: ../IkiWiki/Plugin/comments.pm:756
 msgid "Comment moderation"
 msgstr "Kommentarmoderering"
 
-#: ../IkiWiki/Plugin/comments.pm:774
+#: ../IkiWiki/Plugin/comments.pm:797
 msgid "comment moderation"
 msgstr "kommentarkoderering"
 
-#: ../IkiWiki/Plugin/comments.pm:937
+#: ../IkiWiki/Plugin/comments.pm:960
 #, perl-format
 msgid "%i comment"
 msgid_plural "%i comments"
@@ -305,7 +330,7 @@ msgstr[1] "%i kommentarer"
 #. translators: Here "Comment" is a verb;
 #. translators: the user clicks on it to
 #. translators: post a comment.
-#: ../IkiWiki/Plugin/comments.pm:947
+#: ../IkiWiki/Plugin/comments.pm:970
 msgid "Comment"
 msgstr "Kommentér"
 
@@ -392,7 +417,7 @@ msgid "%s is an attachment, not a page."
 msgstr "%s er en vedhæftning, ikke en side."
 
 #: ../IkiWiki/Plugin/git.pm:839 ../IkiWiki/Plugin/git.pm:902
-#: ../IkiWiki.pm:1794
+#: ../IkiWiki.pm:1825
 #, perl-format
 msgid "you are not allowed to change %s"
 msgstr "Du har ikke lov til at ændre %s"
@@ -453,7 +478,7 @@ msgstr "htmltidy kunne ikke afkode dette html"
 msgid "Image::Magick is not installed"
 msgstr "Image::Magick ikke installeret"
 
-#: ../IkiWiki/Plugin/img.pm:80 ../IkiWiki/Plugin/img.pm:125
+#: ../IkiWiki/Plugin/img.pm:80 ../IkiWiki/Plugin/img.pm:127
 #, perl-format
 msgid "failed to read %s: %s"
 msgstr "læsning af %s mislykkedes: %s"
@@ -463,17 +488,17 @@ msgstr "læsning af %s mislykkedes: %s"
 msgid "failed to get dimensions of %s"
 msgstr "Vurdering af billedstørrelse mislykkedes: %s"
 
-#: ../IkiWiki/Plugin/img.pm:93
+#: ../IkiWiki/Plugin/img.pm:94
 #, perl-format
 msgid "wrong size format \"%s\" (should be WxH)"
 msgstr "forkert størrelsesformat \"%s\" (burde være WxH)"
 
-#: ../IkiWiki/Plugin/img.pm:129
+#: ../IkiWiki/Plugin/img.pm:131
 #, perl-format
 msgid "failed to resize: %s"
 msgstr "Ændring af størrelse mislykkedes: %s"
 
-#: ../IkiWiki/Plugin/img.pm:154
+#: ../IkiWiki/Plugin/img.pm:156
 #, perl-format
 msgid "failed to determine size of image %s"
 msgstr "Vurdering af billedstørrelse mislykkedes: %s"
@@ -607,7 +632,17 @@ msgstr "indlæsning af openid-modul mislykkedes: "
 msgid "All pages have other pages linking to them."
 msgstr "Alle sider har henvisninger fra andre sider."
 
-#: ../IkiWiki/Plugin/pagetemplate.pm:30
+#: ../IkiWiki/Plugin/pagetemplate.pm:44
+#, fuzzy, perl-format
+msgid "pagetemplate_matching: bad or missing template '%s'"
+msgstr "dårlig eller manglende skabelon"
+
+#: ../IkiWiki/Plugin/pagetemplate.pm:48
+#, perl-format
+msgid "pagetemplate_matching: invalid pagespec '%s' for template '%s'"
+msgstr ""
+
+#: ../IkiWiki/Plugin/pagetemplate.pm:60
 msgid "bad or missing template"
 msgstr "dårlig eller manglende skabelon"
 
@@ -1162,12 +1197,12 @@ msgstr "Fejl: %s returnerede ikke-nul (%s). Dropper opsætningsændringer."
 msgid "cannot determine id of untrusted committer %s"
 msgstr "kan ikke afgøre id for ikke-tillidsfulde skribent %s"
 
-#: ../IkiWiki/Render.pm:160
+#: ../IkiWiki/Render.pm:161
 #, perl-format
 msgid "scanning %s"
 msgstr "gennemlæser %s"
 
-#: ../IkiWiki/Render.pm:283
+#: ../IkiWiki/Render.pm:284
 #, perl-format
 msgid ""
 "symlink found in srcdir path (%s) -- set allow_symlinks_before_srcdir to "
@@ -1176,52 +1211,52 @@ msgstr ""
 "symbolsk lænke fundet i srcdir-sti (%s) -- sæt allow_symlinks_before_srcdir "
 "for at tillade dette"
 
-#: ../IkiWiki/Render.pm:334 ../IkiWiki/Render.pm:395
+#: ../IkiWiki/Render.pm:335 ../IkiWiki/Render.pm:397
 #, perl-format
 msgid "skipping bad filename %s"
 msgstr "udelader forkert filnavn %s"
 
-#: ../IkiWiki/Render.pm:351 ../IkiWiki/Render.pm:400
+#: ../IkiWiki/Render.pm:352 ../IkiWiki/Render.pm:402
 #, perl-format
 msgid "%s has multiple possible source pages"
 msgstr "%s har flere mulige kildesider"
 
-#: ../IkiWiki/Render.pm:437
+#: ../IkiWiki/Render.pm:439
 #, perl-format
 msgid "querying %s for file creation and modification times.."
 msgstr "anmoder %s om oprettelses- og redigeringstider for fil.."
 
-#: ../IkiWiki/Render.pm:512
+#: ../IkiWiki/Render.pm:514
 #, perl-format
 msgid "removing obsolete %s"
 msgstr "fjerner forældet %s"
 
-#: ../IkiWiki/Render.pm:597
+#: ../IkiWiki/Render.pm:599
 #, perl-format
 msgid "building %s, which links to %s"
 msgstr "danner %s, som henviser til %s"
 
-#: ../IkiWiki/Render.pm:606
+#: ../IkiWiki/Render.pm:608
 #, perl-format
 msgid "removing %s, no longer built by %s"
 msgstr "fjerner %s, ikke længere dannet af %s"
 
-#: ../IkiWiki/Render.pm:689 ../IkiWiki/Render.pm:771
+#: ../IkiWiki/Render.pm:691 ../IkiWiki/Render.pm:773
 #, perl-format
 msgid "building %s, which depends on %s"
 msgstr "danner %s, som afhænger af %s"
 
-#: ../IkiWiki/Render.pm:784
+#: ../IkiWiki/Render.pm:786
 #, perl-format
 msgid "building %s, to update its backlinks"
 msgstr "danner %s, for at opdatere dens krydshenvisninger (backlinks)"
 
-#: ../IkiWiki/Render.pm:895
+#: ../IkiWiki/Render.pm:897
 #, perl-format
 msgid "building %s"
 msgstr "danner %s"
 
-#: ../IkiWiki/Render.pm:964
+#: ../IkiWiki/Render.pm:966
 #, perl-format
 msgid "ikiwiki: cannot build %s"
 msgstr "ikiwiki: kan ikke danne %s"
@@ -1318,59 +1353,59 @@ msgstr "genopbygger wiki..."
 msgid "refreshing wiki.."
 msgstr "genopfrisker wiki..."
 
-#: ../IkiWiki.pm:269
+#: ../IkiWiki.pm:270
 msgid "Discussion"
 msgstr "Diskussion"
 
-#: ../IkiWiki.pm:609
+#: ../IkiWiki.pm:637
 msgid "Must specify url to wiki with --url when using --cgi"
 msgstr "Skal angive url til wiki med --url når der bruges --cgi"
 
-#: ../IkiWiki.pm:684
+#: ../IkiWiki.pm:712
 #, fuzzy, perl-format
 msgid "unsupported umask setting %s"
 msgstr "Ikke-understøttet sideformat %s"
 
-#: ../IkiWiki.pm:724
+#: ../IkiWiki.pm:752
 msgid "cannot use multiple rcs plugins"
 msgstr "kan ikke bruge flere samtidige RCS-udvidelser"
 
-#: ../IkiWiki.pm:754
+#: ../IkiWiki.pm:782
 #, perl-format
 msgid "failed to load external plugin needed for %s plugin: %s"
 msgstr ""
 "indlæsning af ekstern udvidelse krævet af udvidelsen %s mislykkedes: %s"
 
-#: ../IkiWiki.pm:1556
+#: ../IkiWiki.pm:1587
 #, perl-format
 msgid "preprocessing loop detected on %s at depth %i"
 msgstr "forudberegningssløkke fundet på %s ved dybde %i"
 
-#: ../IkiWiki.pm:1750
+#: ../IkiWiki.pm:1781
 #, perl-format
 msgid "bad file name %s"
 msgstr "dårligt filnavn %s"
 
-#: ../IkiWiki.pm:2060
+#: ../IkiWiki.pm:2094
 #, perl-format
 msgid "template %s not found"
 msgstr "skabelon %s ikke fundet"
 
-#: ../IkiWiki.pm:2318
+#: ../IkiWiki.pm:2352
 msgid "yes"
 msgstr "ja"
 
-#: ../IkiWiki.pm:2403
+#: ../IkiWiki.pm:2437
 #, perl-format
 msgid "invalid sort type %s"
 msgstr "forkert sorteringstype %s"
 
-#: ../IkiWiki.pm:2424
+#: ../IkiWiki.pm:2458
 #, perl-format
 msgid "unknown sort type %s"
 msgstr "ukendt sorteringsform %s"
 
-#: ../IkiWiki.pm:2573
+#: ../IkiWiki.pm:2607
 #, perl-format
 msgid "cannot match pages: %s"
 msgstr "kan ikke få sider til at passe sammen: %s"
