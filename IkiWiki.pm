@@ -5,6 +5,7 @@ package IkiWiki;
 use warnings;
 use strict;
 use Encode;
+use Fcntl q{:flock};
 use URI::Escape q{uri_escape_utf8};
 use POSIX ();
 use Storable;
@@ -274,7 +275,7 @@ sub getsetup () {
 	html5 => {
 		type => "boolean",
 		default => 0,
-		description => "generate HTML5?",
+		description => "use elements new in HTML5 like <section>?",
 		advanced => 0,
 		safe => 1,
 		rebuild => 1,
@@ -357,11 +358,20 @@ sub getsetup () {
 		safe => 0, # paranoia
 		rebuild => 0,
 	},
+	libdirs => {
+		type => "string",
+		default => [],
+		example => ["$ENV{HOME}/.local/share/ikiwiki"],
+		description => "extra library and plugin directories",
+		advanced => 1,
+		safe => 0, # directory
+		rebuild => 0,
+	},
 	libdir => {
 		type => "string",
 		default => "",
 		example => "$ENV{HOME}/.ikiwiki/",
-		description => "extra library and plugin directory",
+		description => "extra library and plugin directory (searched after libdirs)",
 		advanced => 1,
 		safe => 0, # directory
 		rebuild => 0,
@@ -549,6 +559,24 @@ sub getsetup () {
 		safe => 0,
 		rebuild => 0,
 	},
+	responsive_layout => {
+		type => "boolean",
+		default => 1,
+		description => "theme has a responsive layout? (mobile-optimized)",
+		safe => 1,
+		rebuild => 1,
+	},
+}
+
+sub getlibdirs () {
+	my @libdirs;
+	if ($config{libdirs}) {
+		@libdirs = @{$config{libdirs}};
+	}
+	if (length $config{libdir}) {
+		push @libdirs, $config{libdir};
+	}
+	return @libdirs;
 }
 
 sub defaultconfig () {
@@ -693,14 +721,14 @@ sub checkconfig () {
 sub listplugins () {
 	my %ret;
 
-	foreach my $dir (@INC, $config{libdir}) {
+	foreach my $dir (@INC, getlibdirs()) {
 		next unless defined $dir && length $dir;
 		foreach my $file (glob("$dir/IkiWiki/Plugin/*.pm")) {
 			my ($plugin)=$file=~/.*\/(.*)\.pm$/;
 			$ret{$plugin}=1;
 		}
 	}
-	foreach my $dir ($config{libdir}, "$installdir/lib/ikiwiki") {
+	foreach my $dir (getlibdirs(), "$installdir/lib/ikiwiki") {
 		next unless defined $dir && length $dir;
 		foreach my $file (glob("$dir/plugins/*")) {
 			$ret{basename($file)}=1 if -x $file;
@@ -711,8 +739,8 @@ sub listplugins () {
 }
 
 sub loadplugins () {
-	if (defined $config{libdir} && length $config{libdir}) {
-		unshift @INC, possibly_foolish_untaint($config{libdir});
+	foreach my $dir (getlibdirs()) {
+		unshift @INC, possibly_foolish_untaint($dir);
 	}
 
 	foreach my $plugin (@{$config{default_plugins}}, @{$config{add_plugins}}) {
@@ -745,8 +773,8 @@ sub loadplugin ($;$) {
 
 	return if ! $force && grep { $_ eq $plugin} @{$config{disable_plugins}};
 
-	foreach my $dir (defined $config{libdir} ? possibly_foolish_untaint($config{libdir}) : undef,
-	                 "$installdir/lib/ikiwiki") {
+	foreach my $possiblytainteddir (getlibdirs(), "$installdir/lib/ikiwiki") {
+		my $dir = possibly_foolish_untaint($possiblytainteddir);
 		if (defined $dir && -x "$dir/plugins/$plugin") {
 			eval { require IkiWiki::Plugin::external };
 			if ($@) {
@@ -1809,8 +1837,11 @@ sub lockwiki () {
 	}
 	open($wikilock, '>', "$config{wikistatedir}/lockfile") ||
 		error ("cannot write to $config{wikistatedir}/lockfile: $!");
-	if (! flock($wikilock, 2)) { # LOCK_EX
-		error("failed to get lock");
+	if (! flock($wikilock, LOCK_EX | LOCK_NB)) {
+		debug("failed to get lock; waiting...");
+		if (! flock($wikilock, LOCK_EX)) {
+			error("failed to get lock");
+		}
 	}
 	return 1;
 }
