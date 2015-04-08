@@ -81,10 +81,10 @@ underlays_copy_stamp:
 	touch $@
 
 underlays: ../ikiwiki.out underlays_copy_stamp
-	../ikiwiki.out -libdir .. -setup underlay.setup -refresh
+	../ikiwiki.out --libdir .. --setup underlay.setup --refresh
 
 ../ikiwiki.out: ../Makefile
-	make -C .. ikiwiki.out
+	$(MAKE) -C .. ikiwiki.out
 
 ../Makefile: ../Makefile.PL
 	cd .. && ./Makefile.PL

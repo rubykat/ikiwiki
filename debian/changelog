@@ -1,4 +1,28 @@
-ikiwiki (3.20141017) UNRELEASED; urgency=medium
+ikiwiki (3.20150329) experimental; urgency=high
+
+  [ Joey Hess ]
+  * Fix NULL ptr deref on ENOMEM in wrapper. (Thanks, igli)
+
+  [ Simon McVittie ]
+  * Really don't double-decode CGI submissions, even on Perl versions that
+    bundle an old enough Encode.pm for that not to be a problem: the
+    system might have a newer Encode.pm installed separately, like Fedora 20.
+    (Closes: #776181; thanks, Anders Kaseorg)
+  * If neither timezone nor TZ is set, set both to :/etc/localtime if
+    we're on a GNU system and that file exists, or GMT otherwise
+  * t/inline.t: accept translations of "Add a new post titled:"
+    (Closes: #779365)
+  * Consistently document command-line options as e.g. --refresh, not -refresh
+
+  [ Amitai Schlair ]
+  * In VCS-committed anonymous comments, link to url.
+
+  [ Joey Hess ]
+  * Fix XSS in openid selector. Thanks, Raghav Bisht. (Closes: #781483)
+
+ -- Simon McVittie <smcv@debian.org>  Sun, 29 Mar 2015 21:48:24 +0100
+
+ikiwiki (3.20150107) experimental; urgency=medium
 
   [ Joey Hess ]
   * Added ikiwiki-comment program.
@@ -28,8 +52,16 @@ ikiwiki (3.20141017) UNRELEASED; urgency=medium
   [ Amitai Schlair ]
   * core: log a debug message before waiting for the lock.
     Thanks, Mark Jason Dominus
+  * build: in po/Makefile, use the same $(MAKE) as the rest of the build.
+    Thanks, ttw
+  * blogspam: use the 2.0 JSON API (the 1.0 XML-RPC API has been EOL'd).
+    Closes: #774441
 
- -- Joey Hess <joeyh@debian.org>  Mon, 20 Oct 2014 12:04:49 -0400
+  [ Joey Hess ]
+  * po: If msgmerge falls over on a problem po file, print a warning
+    message, but don't let this problem crash ikiwiki entirely.
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 07 Jan 2015 09:13:58 +0000
 
 ikiwiki (3.20141016) unstable; urgency=medium
 

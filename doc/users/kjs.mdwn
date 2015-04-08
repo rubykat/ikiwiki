@@ -2,10 +2,40 @@
 
 Websites using ikiwiki: 
 
+* <http://kalleswork.net>
 * <http://img.kalleswork.net>
 * <http://stockholm.kalleswork.net>
 
 
-Mostly using ikiwiki with the [[/plugins/contrib/album/]] and [[plugins/osm]] plugins. My git repo with tweaks including the simplebw theme and changes to the [[plugins/contrib/album]] templates can be cloned via http at:
+[[!template id=gitbranch branch=kjs/master author="[[Kalle Söderman|kjs]]"]]
 
-* <http://src.kalleswork.net/ikiwiki.git>
+Mostly using ikiwiki with the [[/plugins/contrib/album/]] and [[plugins/osm]]
+plugins. My git repo with tweaks including the simplebw theme and various
+changes to the [[plugins/contrib/album]] plugin and templates can be found in
+my master branch
+
+Note that the master brach is all my changes piled into one branch. **I can't
+code (clone my repo above if you don't believe me!) so noone should run my
+code without checking it first.** I can't stress this enough.
+
+The main changes I've done are the following
+
+* How you browse through the images. The interface i simplified and you click
+the image to view the next rather than download it.
+* Added separate download link for full resolution image unless size is set to
+full in the album directive.
+* Extract metadata from exif/xmp data in the image according to preexisting
+pattern in the album plugin. This was done using
+[Image::ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/ExifTool.html)
+* Autogenerate [[ikiwiki/directive/tag/]]s from exif:Subject if possible.
+* Use the albumitem template to create tag pages with thumbnails.
+* Additional albumpreview template which allows you to define a thumbnail that
+link to the album. Useful for visual index of albums.
+* Extract GPS data and populate a [[plugins/osm]] waypoint if available.
+* Add span around osm icon to allow for styling.
+
+For my public websites above the image metadata is "manually" ie shell script
+populated but I'll eventually start using automatic metadata for new images.
+
+A simple test wiki with downloadable setup and data can be found at:
+<http://src.kalleswork.net/masterbranch/>

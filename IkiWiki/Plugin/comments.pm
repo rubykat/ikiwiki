@@ -206,10 +206,12 @@ sub preprocess {
 			$commentopenid = $commentuser;
 		}
 		else {
-			$commentauthorurl = IkiWiki::cgiurl(
-				do => 'goto',
-				page => IkiWiki::userpage($commentuser)
-			);
+			if (length $config{cgiurl}) {
+				$commentauthorurl = IkiWiki::cgiurl(
+					do => 'goto',
+					page => IkiWiki::userpage($commentuser)
+				);
+			}
 
 			$commentauthor = $commentuser;
 		}
@@ -219,6 +221,25 @@ sub preprocess {
 			$commentip = $params{ip};
 		}
 		$commentauthor = gettext("Anonymous");
+	}
+
+	if ($config{comments_allowauthor}) {
+		if (defined $params{claimedauthor}) {
+			$commentauthor = $params{claimedauthor};
+		}
+
+		if (defined $params{url}) {
+			my $url=$params{url};
+
+			eval q{use URI::Heuristic}; 
+			if (! $@) {
+				$url=URI::Heuristic::uf_uristr($url);
+			}
+
+			if (safeurl($url)) {
+				$commentauthorurl = $url;
+			}
+		}
 	}
 
 	$commentstate{$page}{commentuser} = $commentuser;
@@ -231,29 +252,6 @@ sub preprocess {
 		$pagestate{$page}{meta}{author} = $commentauthor;
 	}
 	if (! defined $pagestate{$page}{meta}{authorurl}) {
-		$pagestate{$page}{meta}{authorurl} = $commentauthorurl;
-	}
-
-	if ($config{comments_allowauthor}) {
-		if (defined $params{claimedauthor}) {
-			$pagestate{$page}{meta}{author} = $params{claimedauthor};
-		}
-
-		if (defined $params{url}) {
-			my $url=$params{url};
-
-			eval q{use URI::Heuristic}; 
-			if (! $@) {
-				$url=URI::Heuristic::uf_uristr($url);
-			}
-
-			if (safeurl($url)) {
-				$pagestate{$page}{meta}{authorurl} = $url;
-			}
-		}
-	}
-	else {
-		$pagestate{$page}{meta}{author} = $commentauthor;
 		$pagestate{$page}{meta}{authorurl} = $commentauthorurl;
 	}
 
@@ -523,12 +521,12 @@ sub editcomment ($$) {
 	    }
 	    else
 	    {
-	        $content .= " " . commentdate() . "\n";
+	        $content .= " date=\"" . commentdate() . "\"\n";
             }
 	}
 	else
 	{
-	    $content .= " " . commentdate() . "\n";
+	    $content .= " date=\"" . commentdate() . "\"\n";
         }
 
 	my $editcontent = $form->field('editcontent');
@@ -658,7 +656,7 @@ sub editcomment ($$) {
 }
 
 sub commentdate () {
-	"date=\"" . strftime_utf8('%Y-%m-%dT%H:%M:%SZ', gmtime) . "\"";
+	strftime_utf8('%Y-%m-%dT%H:%M:%SZ', gmtime);
 }
 
 sub getavatar ($) {
