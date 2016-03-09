@@ -31,11 +31,30 @@ sub getsetup () {
 		},
 }
 
+sub linktext ($%) {
+	# Return the text of the link to a tag, depending on option linktext.
+	my ($page, %params) = @_;
+	if (exists $params{show} &&
+		exists $pagestate{$page} &&
+		exists $pagestate{$page}{meta}{$params{show}}) {
+		return $pagestate{$page}{meta}{$params{show}};
+	}
+	else {
+		return undef;
+	}
+}
+
 sub preprocess (@) {
 	my %params=@_;
 	$params{pages}="*" unless defined $params{pages};
 	my $style = ($params{style} or 'cloud');
-	
+
+	# Backwards compatibility
+	if (defined $params{show} && $params{show} =~ m/^\d+$/) {
+		$params{limit} = $params{show};
+		delete $params{show};
+	}
+
 	my %counts;
 	my $max = 0;
 	foreach my $page (pagespec_match_list($params{page}, $params{pages},
@@ -64,11 +83,11 @@ sub preprocess (@) {
 		$max = $counts{$page} if $counts{$page} > $max;
 	}
 
-	if (exists $params{show}) {
+	if (exists $params{limit}) {
 		my $i=0;
 		my %show;
 		foreach my $key (sort { $counts{$b} <=> $counts{$a} } keys %counts) {
-			last if ++$i > $params{show};
+			last if ++$i > $params{limit};
 			$show{$key}=$counts{$key};
 		}
 		%counts=%show;
@@ -78,7 +97,7 @@ sub preprocess (@) {
 		return "<table class='".(exists $params{class} ? $params{class} : "pageStats")."'>\n".
 			join("\n", map {
 				"<tr><td>".
-				htmllink($params{page}, $params{destpage}, $_, noimageinline => 1).
+				htmllink($params{page}, $params{destpage}, $_, noimageinline => 1, linktext => linktext($_, %params)).
 				"</td><td>".$counts{$_}."</td></tr>"
 			}
 			sort { $counts{$b} <=> $counts{$a} } keys %counts).
@@ -101,7 +120,7 @@ sub preprocess (@) {
 			
 			$res.="<li>" if $style eq 'list';
 			$res .= "<span class=\"$class\">".
-			        htmllink($params{page}, $params{destpage}, $page).
+							htmllink($params{page}, $params{destpage}, $page, linktext => linktext($page, %params)).
 			        "</span>\n";
 			$res.="</li>" if $style eq 'list';
 

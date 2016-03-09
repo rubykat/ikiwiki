@@ -160,16 +160,17 @@ sub preprocess_inline (@) {
 		# Running in scan mode: only do the essentials
 
 		if (yesno($params{trail}) && IkiWiki::Plugin::trail->can("preprocess_trailitems")) {
-			# default to sorting age, the same as inline itself,
-			# but let the params override that
-			IkiWiki::Plugin::trail::preprocess_trailitems(sort => 'age', %params);
+			# default to sorting by age with fallback to title,
+			# the same as inline itself, but let the params
+			# override that
+			IkiWiki::Plugin::trail::preprocess_trailitems(sort => 'age title', %params);
 		}
 
 		return;
 	}
 
 	if (yesno($params{trail}) && IkiWiki::Plugin::trail->can("preprocess_trailitems")) {
-		scalar IkiWiki::Plugin::trail::preprocess_trailitems(sort => 'age', %params);
+		scalar IkiWiki::Plugin::trail::preprocess_trailitems(sort => 'age title', %params);
 	}
 
 	my $raw=yesno($params{raw});
@@ -180,11 +181,22 @@ sub preprocess_inline (@) {
 	my $feeds=exists $params{feeds} ? yesno($params{feeds}) : !$quick && ! $raw;
 	my $emptyfeeds=exists $params{emptyfeeds} ? yesno($params{emptyfeeds}) : 1;
 	my $feedonly=yesno($params{feedonly});
-	if (! exists $params{show} && ! $archive) {
-		$params{show}=10;
+
+	# Backwards compatibility
+	if (defined $params{show} && $params{show} =~ m/^\d+$/) {
+		$params{limit} = $params{show};
+		delete $params{show};
 	}
-	if (! exists $params{feedshow} && exists $params{show}) {
-		$params{feedshow}=$params{show};
+	if (defined $params{feedshow} && $params{feedshow} =~ m/^\d+$/) {
+		$params{feedlimit} = $params{feedshow};
+		delete $params{feedshow};
+	}
+
+	if (! exists $params{limit} && ! $archive) {
+		$params{limit}=10;
+	}
+	if (! exists $params{feedlimit} && exists $params{limit}) {
+		$params{feedlimit}=$params{limit};
 	}
 	my $title;
 	if (exists $params{title}) {
@@ -232,11 +244,11 @@ sub preprocess_inline (@) {
 	}
 	else {
 		my $num=0;
-		if ($params{show}) {
-			$num=$params{show};
+		if ($params{limit}) {
+			$num=$params{limit};
 		}
-		if ($params{feedshow} && $num < $params{feedshow} && $num > 0) {
-			$num=$params{feedshow};
+		if ($params{feedlimit} && $num < $params{feedlimit} && $num > 0) {
+			$num=$params{feedlimit};
 		}
 		if ($params{skip} && $num) {
 			$num+=$params{skip};
@@ -245,7 +257,7 @@ sub preprocess_inline (@) {
 		@list = pagespec_match_list($params{page}, $params{pages},
 			deptype => deptype($quick ? "presence" : "content"),
 			filter => sub { $_[0] eq $params{page} },
-			sort => exists $params{sort} ? $params{sort} : "age",
+			sort => exists $params{sort} ? $params{sort} : "age title",
 			reverse => yesno($params{reverse}),
 			($num ? (num => $num) : ()),
 		);
@@ -257,17 +269,17 @@ sub preprocess_inline (@) {
 	
 	my @feedlist;
 	if ($feeds) {
-		if (exists $params{feedshow} &&
-		    $params{feedshow} && @list > $params{feedshow}) {
-			@feedlist=@list[0..$params{feedshow} - 1];
+		if (exists $params{feedlimit} &&
+		    $params{feedlimit} && @list > $params{feedlimit}) {
+			@feedlist=@list[0..$params{feedlimit} - 1];
 		}
 		else {
 			@feedlist=@list;
 		}
 	}
 	
-	if ($params{show} && @list > $params{show}) {
-		@list=@list[0..$params{show} - 1];
+	if ($params{limit} && @list > $params{limit}) {
+		@list=@list[0..$params{limit} - 1];
 	}
 
 	if ($feeds && exists $params{feedpages}) {
@@ -601,7 +613,7 @@ sub absolute_urls ($$) {
 					$v=$baseurl.$v; # anchor
 				}
 				elsif ($dv=~/^(?!\w+:)[^\/]/) {
-					$v=$url.$v; # relative url
+					$v=URI->new_abs($v, $url)->canonical; # relative url
 				}
 				elsif ($dv=~/^\//) {
 					if (! defined $urltop) {
@@ -713,6 +725,7 @@ sub genfeed ($$$$$@) {
 
 	my $template=template_depends($feedtype."page.tmpl", $page, blind_cache => 1);
 	$template->param(
+		wants_absolute_urls => 1,
 		title => $feedtitle,
 		wikiname => $config{wikiname},
 		pageurl => $url,

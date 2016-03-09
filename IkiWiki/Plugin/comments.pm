@@ -198,7 +198,6 @@ sub preprocess {
 		$commentuser = $params{username};
 
 		my $oiduser = eval { IkiWiki::openiduser($commentuser) };
-
 		if (defined $oiduser) {
 			# looks like an OpenID
 			$commentauthorurl = $commentuser;
@@ -206,6 +205,11 @@ sub preprocess {
 			$commentopenid = $commentuser;
 		}
 		else {
+			my $emailuser = IkiWiki::emailuser($commentuser);
+			if (defined $emailuser) {
+				$commentuser=$emailuser;
+			}
+
 			if (length $config{cgiurl}) {
 				$commentauthorurl = IkiWiki::cgiurl(
 					do => 'goto',
@@ -352,7 +356,8 @@ sub editcomment ($$) {
 	my @page_types;
 	if (exists $IkiWiki::hooks{htmlize}) {
 		foreach my $key (grep { !/^_/ && isallowed($_) } keys %{$IkiWiki::hooks{htmlize}}) {
-			push @page_types, [$key, $IkiWiki::hooks{htmlize}{$key}{longname} || $key];
+			push @page_types, [$key, $IkiWiki::hooks{htmlize}{$key}{longname} || $key]
+				unless $IkiWiki::hooks{htmlize}{$key}{nocreate};
 		}
 	}
 	@page_types=sort @page_types;
@@ -468,7 +473,7 @@ sub editcomment ($$) {
 	my $content = "[[!comment format=$type\n";
 
 	if (defined $session->param('name')) {
-		my $username = $session->param('name');
+		my $username = IkiWiki::cloak($session->param('name'));
 		$username =~ s/"/&quot;/g;
 		$content .= " username=\"$username\"\n";
 	}
@@ -481,7 +486,7 @@ sub editcomment ($$) {
 
 	if (!(defined $session->param('name') || defined $session->param('nickname')) &&
 		defined $session->remote_addr()) {
-		$content .= " ip=\"".$session->remote_addr()."\"\n";
+		$content .= " ip=\"".IkiWiki::cloak($session->remote_addr())."\"\n";
 	}
 
 	if ($config{comments_allowauthor}) {
@@ -937,16 +942,18 @@ sub pagetemplate (@) {
 	}
 
 	if ($shown) {
+		my $absolute = $template->param('wants_absolute_urls');
+
 		if ($template->query(name => 'commentsurl')) {
 			$template->param(commentsurl =>
-				urlto($page).'#comments');
+				urlto($page, undef, $absolute).'#comments');
 		}
 
 		if ($template->query(name => 'atomcommentsurl') && $config{usedirs}) {
 			# This will 404 until there are some comments, but I
 			# think that's probably OK...
 			$template->param(atomcommentsurl =>
-				urlto($page).'comments.atom');
+				urlto($page, undef, $absolute).'comments.atom');
 		}
 
 		if ($template->query(name => 'commentslink')) {

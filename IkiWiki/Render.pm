@@ -111,7 +111,7 @@ sub genpage ($$) {
 	}
 	templateactions($template, $page);
 
-	my @backlinks=sort { $a->{page} cmp $b->{page} } backlinks($page);
+	my @backlinks=sort { $a->{page} cmp $b->{page} || $a->{url} cmp $b->{url} } backlinks($page);
 	my ($backlinks, $more_backlinks);
 	if (@backlinks <= $config{numbacklinks} || ! $config{numbacklinks}) {
 		$backlinks=\@backlinks;
@@ -155,7 +155,7 @@ sub genpage ($$) {
 
 sub scan ($) {
 	my $file=shift;
-	return if $phase > PHASE_SCAN || $scanned{$file};
+	return if ($config{rebuild} && $phase > PHASE_SCAN) || $scanned{$file};
 	$scanned{$file}=1;
 
 	debug(sprintf(gettext("scanning %s"), $file));
@@ -326,6 +326,7 @@ sub find_src_files (;$$$) {
 		$page = pagename($file);
 		if (! exists $pagesources{$page} &&
 		    file_pruned($file)) {
+			no warnings 'once';
 			$File::Find::prune=1;
 			return;
 		}
@@ -475,7 +476,11 @@ sub find_new_files ($) {
 			}
 			$pagecase{lc $page}=$page;
 			if (! exists $pagectime{$page}) {
-				my $ctime=(srcfile_stat($file, 1))[10];
+				my @stat=srcfile_stat($file, 1);
+				# For the creation time of the page, take the
+				# inode change time (not creation time!) or
+				# the modification time, whichever is older.
+				my $ctime=($stat[10] < $stat[9] ? $stat[10] : $stat[9]);
 				$pagectime{$page}=$ctime if defined $ctime;
 			}
 		}
@@ -887,9 +892,10 @@ sub refresh () {
 
 	# At this point it becomes OK to start matching pagespecs.
 	$phase = PHASE_RENDER;
-	# Save some memory: we no longer need to keep track of which pages
-	# we've scanned
-	%scanned = ();
+	# Save some memory in full rebuilds: we no longer need to keep
+	# track of which pages we've scanned, because we can assume the
+	# answer is "all of them".
+	%scanned = () if $config{rebuild};
 
 	remove_del(@$del, @$internal_del);
 

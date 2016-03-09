@@ -336,16 +336,19 @@ sub check_banned ($$) {
 
 	my $banned=0;
 	my $name=$session->param("name");
+	my $cloak=cloak($name) if defined $name;
 	if (defined $name && 
-	    grep { $name eq $_ } @{$config{banned_users}}) {
+	    grep { $name eq $_ || $cloak eq $_ } @{$config{banned_users}}) {
 		$banned=1;
 	}
 
 	foreach my $b (@{$config{banned_users}}) {
 		if (pagespec_match("", $b,
 			ip => $session->remote_addr(),
-			name => defined $name ? $name : "",
-		)) {
+			name => defined $name ? $name : "")
+		   || pagespec_match("", $b,
+		   	ip => cloak($session->remote_addr()),
+			name => defined $cloak ? $cloak : "")) {
 			$banned=1;
 			last;
 		}
@@ -413,7 +416,9 @@ sub cgi (;$$) {
 
 	eval q{use CGI};
 	error($@) if $@;
+	no warnings "once";
 	$CGI::DISABLE_UPLOADS=$config{cgi_disable_uploads};
+	use warnings;
 
 	if (! $q) {
 		binmode(STDIN);

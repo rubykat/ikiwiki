@@ -16,7 +16,7 @@ BEGIN {
 		die $@;
 	}
 }
-use Test::More tests => 22;
+use Test::More tests => 26;
 
 BEGIN { use_ok("IkiWiki"); }
 
@@ -27,8 +27,16 @@ $config{diffurl} = '/nonexistent/cgit/plain/[[file]]';
 IkiWiki::loadplugins();
 IkiWiki::checkconfig();
 
+my $makerepo;
+if ($ENV{INSTALLED_TESTS}) {
+	$makerepo = "ikiwiki-makerepo";
+}
+else {
+	$makerepo = "./ikiwiki-makerepo";
+}
+
 ok (mkdir($config{srcdir}));
-is (system("./ikiwiki-makerepo git $config{srcdir} $dir/repo"), 0);
+is (system("$makerepo git $config{srcdir} $dir/repo"), 0);
 
 my @changes;
 @changes = IkiWiki::rcs_recentchanges(3);
@@ -116,5 +124,22 @@ unlike(
 	qr{%2F}m,
 	q{path separators are preserved when UTF-8scaping filename}
 );
+
+# do a clean checkout to verify that "empty ident not allowed" is avoided
+ok(! system("rm", "-rf", $config{srcdir}));
+ok(! system("git", "clone", "$dir/repo", $config{srcdir}));
+
+writefile('unconfigured_author.mdwn', $config{srcdir}, 'I am an unconfigured git author');
+IkiWiki::rcs_add("unconfigured_author.mdwn");
+IkiWiki::rcs_commit(
+	file => "unconfigured_author.mdwn",
+	message => "hello, world",
+	token => "moo",
+);
+
+@changes = IkiWiki::rcs_recentchanges(6);
+
+is($#changes, 5);
+is($changes[0]{pages}[0]{"page"}, "unconfigured_author");
 
 system "rm -rf $dir";

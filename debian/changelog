@@ -1,3 +1,122 @@
+ikiwiki (3.20160122) UNRELEASED; urgency=medium
+
+  [ Simon McVittie ]
+  * d/control: use https for Homepage
+  * d/control: add Vcs-Browser
+
+  [ Joey Hess ]
+  * loginselector: When only openid and emailauth are enabled, but
+    passwordauth is not, avoid showing a "Other" box which opens an
+    empty form.
+
+  [ Amitai Schlair ]
+  * mdwn: Process .md like .mdwn, but disallow web creation.
+
+ -- Simon McVittie <smcv@debian.org>  Thu, 21 Jan 2016 22:34:04 +0000
+
+ikiwiki (3.20160121) unstable; urgency=medium
+
+  [ Amitai Schlair ]
+  * meta: Fix [[!meta name=foo]] by closing the open quote.
+  * Avoid unescaped "{" in regular expressions
+  * meta test: Add tests for many behaviors of the directive.
+  * img test: Bail gracefully when ImageMagick is not present.
+
+  [ Joey Hess ]
+  * emailauth: Added emailauth_sender config.
+  * Modified page.tmpl to to set html lang= and dir= when
+    values have been specified for them, which the po plugin does.
+  * Specifically license the javascript underlay under the permissive
+    basewiki license.
+
+  [ Simon McVittie ]
+  * git: if no committer identity is known, set it to
+    "IkiWiki <ikiwiki.info>" in .git/config. This resolves commit errors
+    in versions of git that require a non-trivial committer identity.
+  * inline, trail: rename show, feedshow parameters to limit, feedlimit
+    (with backwards compatibility)
+  * pagestats: add "show" option to show meta fields. Thanks, Louis
+  * inline: force RSS <comments> to be a fully absolute URL as required
+    by the W3C validator. Please use Atom feeds if relative URLs are
+    desirable on your site.
+  * inline: add <atom:link rel="self"> to RSS feeds as recommended by
+    the W3C validator
+  * inline: do not produce links containing /./ or /../
+  * syslog: accept and encode UTF-8 messages
+  * syslog: don't fail to log if the wiki name contains %s
+  * Change dependencies from transitional package perlmagick
+    to libimage-magick-perl (Closes: #789221)
+  * debian/copyright: update for the rename of openid-selector to
+    login-selector
+  * d/control: remove leading article from Description
+    (lintian: description-synopsis-starts-with-article)
+  * d/control: Standards-Version: 3.9.6, no changes required
+  * Wrap and sort control files (wrap-and-sort -abst)
+  * Silence "used only once: possible typo" warnings for variables
+    that are part of modules' APIs
+  * Run autopkgtest tests using autodep8 and the pkg-perl team's
+    infrastructure
+  * Add enough build-dependencies to run all tests, except for
+    non-git VCSs
+  * tests: consistently use done_testing instead of no_plan
+  * t/img.t: do not spuriously skip
+  * img test: skip testing PDFs if unsupported
+  * img test: use the right filenames when testing that deletion occurs
+
+ -- Simon McVittie <smcv@debian.org>  Thu, 21 Jan 2016 09:53:07 +0000
+
+ikiwiki (3.20150614) unstable; urgency=medium
+
+  * inline: change default sort order from age to "age title" for
+    determinism, partially fixing deterministic build for git-annex,
+    ikiwiki-hosting etc. (Closes: #785757)
+  * img: avoid ImageMagick misinterpreting filenames containing a colon
+  * img test: set old timestamp on source file that will change, so that
+    the test will pass even if it takes less than 1 second
+
+ -- Simon McVittie <smcv@debian.org>  Sun, 14 Jun 2015 18:13:23 +0100
+
+ikiwiki (3.20150610) unstable; urgency=low
+
+  [ Joey Hess ]
+  * New emailauth plugin lets users log in, without any registration,
+    by simply clicking on a link in an email.
+  * Re-remove google from openid selector; their openid provider is
+    gone for good.
+  * Make the openid selector display "Password" instead of "Other"
+    when appropriate, so users are more likely to click on it when
+    they don't have an openid.
+  * Converted openid-selector into a more generic loginselector helper
+    plugin.
+  * passwordauth: Don't allow registering accounts that look like openids.
+  * Make cgiurl output deterministic, not hash order. Closes: #785738
+    Thanks, Daniel Kahn Gillmor
+
+  [ Simon McVittie ]
+  * Do not enable emailauth by default, to avoid surprises on httpauth-only
+    sites. Enable it by default in openid instead, since it is essentially
+    a replacement for OpenIDs.
+  * Make the attachment plugin work with CGI.pm 4.x (Closes: #786586;
+    workaround for #786587 in libcgi-pm-perl)
+  * Add a public-domain email icon from tango-icon-theme
+  * Populate pagectime from either mtime or inode change time,
+    whichever is older, again for more reproducible builds
+  * debian: build the docwiki with LC_ALL=C.UTF-8 and TZ=UTC
+  * debian/copyright: consolidate permissive licenses
+  * debian/copyright: turn comments on provenance into Comment
+  * brokenlinks: sort the pages that link to the missing page, for
+    better reproducibility
+  * Add [[!meta date]] to news items and tips, since the git checkout
+    and build process can leave the checkout date in the tarball
+    release, leading to unstable sorting
+  * Sort backlinks deterministically, by falling back to sorting by href
+    if the link text is identical
+  * Add a $config{deterministic} option and use it for the docwiki
+  * haiku: if deterministic build is requested, return a hard-coded haiku
+  * polygen: if deterministic build is requested, use a well-known random seed
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 10 Jun 2015 21:56:36 +0100
+
 ikiwiki (3.20150329) experimental; urgency=high
 
   [ Joey Hess ]

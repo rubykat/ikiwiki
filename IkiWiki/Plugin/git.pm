@@ -220,6 +220,21 @@ sub run_or_die ($@) { safe_git(\&error, undef, @_) }
 sub run_or_cry ($@) { safe_git(sub { warn @_ }, undef, @_) }
 sub run_or_non ($@) { safe_git(undef, undef, @_) }
 
+sub ensure_committer {
+	if (! length $ENV{GIT_AUTHOR_NAME} || ! length $ENV{GIT_COMMITTER_NAME}) {
+		my $name = join('', run_or_non("git", "config", "user.name"));
+		if (! length $name) {
+			run_or_die("git", "config", "user.name", "IkiWiki");
+		}
+	}
+
+	if (! length $ENV{GIT_AUTHOR_EMAIL} || ! length $ENV{GIT_COMMITTER_EMAIL}) {
+		my $email = join('', run_or_non("git", "config", "user.email"));
+		if (! length $email) {
+			run_or_die("git", "config", "user.email", "ikiwiki.info");
+		}
+	}
+}
 
 sub merge_past ($$$) {
 	# Unlike with Subversion, Git cannot make a 'svn merge -rN:M file'.
@@ -257,6 +272,8 @@ sub merge_past ($$$) {
 
 	my @undo;      # undo stack for cleanup in case of an error
 	my $conflict;  # file content with conflict markers
+
+	ensure_committer();
 
 	eval {
 		# Hide local changes from Git by renaming the modified file.
@@ -526,6 +543,8 @@ sub rcs_get_current_rev () {
 sub rcs_update () {
 	# Update working directory.
 
+	ensure_committer();
+
 	if (length $config{gitorigin_branch}) {
 		run_or_cry('git', 'pull', '--prune', $config{gitorigin_branch});
 	}
@@ -579,7 +598,7 @@ sub rcs_commit_helper (@) {
 			$u=$params{session}->remote_addr();
 		}
 		if (defined $u) {
-			$u=encode_utf8($u);
+			$u=encode_utf8(IkiWiki::cloak($u));
 			$ENV{GIT_AUTHOR_NAME}=$u;
 		}
 		if (defined $params{session}->param("nickname")) {
@@ -591,6 +610,8 @@ sub rcs_commit_helper (@) {
 			$ENV{GIT_AUTHOR_EMAIL}="$u\@web";
 		}
 	}
+
+	ensure_committer();
 
 	$params{message} = IkiWiki::possibly_foolish_untaint($params{message});
 	my @opts;
@@ -631,6 +652,8 @@ sub rcs_add ($) {
 
 	my ($file) = @_;
 
+	ensure_committer();
+
 	run_or_cry('git', 'add', $file);
 }
 
@@ -639,11 +662,15 @@ sub rcs_remove ($) {
 
 	my ($file) = @_;
 
+	ensure_committer();
+
 	run_or_cry('git', 'rm', '-f', $file);
 }
 
 sub rcs_rename ($$) {
 	my ($src, $dest) = @_;
+
+	ensure_committer();
 
 	run_or_cry('git', 'mv', '-f', $src, $dest);
 }
@@ -943,6 +970,8 @@ sub rcs_revert ($) {
 	# Try to revert the given rev; returns undef on _success_.
 	my $rev = shift;
 	my ($sha1) = $rev =~ /^($sha1_pattern)$/; # untaint
+
+	ensure_committer();
 
 	if (run_or_non('git', 'revert', '--no-commit', $sha1)) {
 		return undef;
