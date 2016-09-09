@@ -14,10 +14,11 @@ Ikiwiki Hosting
 ===============
 
 [[!table data="""
-Name                                         | Ikiwiki Configuration                                                             | Costs
-[Branchable](http://branchable.com/)         | Open configuration with [ikiwiki-hosting](http://ikiwiki-hosting.branchable.com/) | Free for free software, otherwise involves fees
-[Piny.be](http://piny.be/)                   | Restricted configuration with [Piny](http://piny.be/piny-code/)                   | Free for non-profit purposes (including open source projects); commercial activity disallowed.
-[FairlyStable.org](http://fairlystable.org/) | Restricted configuration with [Piny](http://piny.be/piny-code/)                   | Free for small projects, otherwise involves fees
+Name                                              | Ikiwiki Configuration                                                             | Costs
+[Branchable](http://branchable.com/)              | Open configuration with [ikiwiki-hosting](http://ikiwiki-hosting.branchable.com/) | Free for free software, otherwise involves fees
+[Piny.be](http://piny.be/)                        | Restricted configuration with [Piny](http://piny.be/piny-code/)                   | Free for non-profit purposes (including open source projects); commercial activity disallowed.
+[FairlyStable.org](http://fairlystable.org/)      | Restricted configuration with [Piny](http://piny.be/piny-code/)                   | Free for small projects, otherwise involves fees
+[FreedomBox](https://wiki.debian.org/FreedomBox/) | Web configuration with Plinth                                                     | Runs on your home's private cloud server
 """]]
 
 Projects & Organizations
@@ -96,13 +97,18 @@ Projects & Organizations
 * [[CAS Libres|http://cas-libres.poivron.org]] - A French feminist radio program.
 * [[Les Barricades|http://barricades.int.eu.org]] - A French socialist choir (CSS has been adapted from the one of [[Grésille|http://www.gresille.org]]).
 * [DKØTU Amateur Radio Station](http://www.dk0tu.de), TU Berlin
-* [[Plan A|http://www.plan-a-muenchen.de/]] - A proposal for improvement of the urban public transport in Munich (by PRO BAHN, Bund Naturschutz and others)
+* [[Plan A|http://www.plan-a-muenchen.de/]] - A proposal for improvement of the urban public transport in Munich (by [[PRO BAHN|http://www.pro-bahn.de/]], Bund Naturschutz and others)
 * [[Smuxi IRC Client|https://smuxi.im/]] - powerful IRC client for GNOME
 * [[hplusroadmap|http://diyhpl.us/wiki/]] - a community for open source hardware, do-it-yourself biohacking and practical transhumanism
 * [[OpenAFS|http://wiki.openafs.org]] - an open-source, cross-platform distributed file system
 * [Copyleft.org](http://copyleft.org/)
 * [Hacklab Independência](https://hi.ato.br) - radical tech collective
 * [Piratas XYZ](http://piratas.xyz) - one of [pirate party of brazil](http://partidopirata.org)'s sites
+* [Bürgerinitiative S4-Ausbau](https://www.s4-ausbau.de/) - A initative in the larger munich area to improve the public transport line S4
+* [MagmaSoft](http://magma-soft.at/), as well as the support site and the [Software Wiki](http://at.magma-soft.at/sw/)
+* [[voice in time|http://voice-in-time.com]] a voice recording studio located in Hamburg, Germany (rather complex build using ikiwiki only, providing CGI access for the customer)
+* [[nb instrument|http://nb-instrument.com]] a workshop for beautifully handcrafted musical instruments, located in Hamburg, Germany (also one of our rather complex builds using ikiwiki only, providing CGI access for the customer)
+* [[coido architects|http://coido.de]] architectural company, located in Hamburg, Germany and Rotterdam, Netherlands (also rather complex build adding masonry and gallery scripts and some pjaxing to the picture, providing CGI access for the customer)
 
 Personal sites and blogs
 ========================
@@ -215,3 +221,4 @@ Personal sites and blogs
 * [Mídia Capoeira](https://capoeira.li/blog/) - independent journalism initiative
 * [Sean Whitton's personal website](http://spwhitton.name/)
 * [Matto's personal website](https://box.matto.nl)
+* [Rob Sayers' personal website](http://www.robsayers.com)

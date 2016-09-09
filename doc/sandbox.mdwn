@@ -1,4 +1,14 @@
+###Is this a heading? 
+
+Sure it is. 
+
 Nope my friend.
+
+<<<<<<< HEAD
+[[test link]]
+=======
+[[Test link]]
+>>>>>>> 59f04c5ad3daf0c01e81d28ec1106e23567a1100
 
 [[!meta date="Thu Jun 16 22:04:33 2005" updated="Thu Dec 22 01:23:20 2011"]]
 
@@ -35,10 +45,12 @@ testing markdown
 
 - bar
 
-###
+### trois
 
 - blah
     - more blah
+
+#### quatre
 
 ## bir
 - bir
@@ -50,7 +62,7 @@ testing markdown
 ** cyildiz
 
 - tire
--- ctire
+  - ctire
 
 * *i dene*
 * **b dene**
@@ -201,3 +213,5 @@ Räksmörgås.
 Testing. Test. 試験として書き込みします。
 
 Καλημέρα!
+
+test

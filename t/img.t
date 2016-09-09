@@ -13,6 +13,7 @@ package IkiWiki;
 
 use warnings;
 use strict;
+use Cwd qw(getcwd);
 use Test::More;
 plan(skip_all => "Image::Magick not available")
 	unless eval q{use Image::Magick; 1};
@@ -27,16 +28,15 @@ if ($installed) {
 }
 else {
 	ok(! system("make -s ikiwiki.out"));
-	@command = qw(perl -I. ./ikiwiki.out
+	@command = ("perl", "-I".getcwd, qw(./ikiwiki.out
 		--underlaydir=underlays/basewiki
 		--set underlaydirbase=underlays
-		--templatedir=templates);
+		--templatedir=templates));
 }
 
 push @command, qw(--set usedirs=0 --plugin img t/tmp/in t/tmp/out --verbose);
 
 my $magick = new Image::Magick;
-my $SVGS_WORK = defined $magick->QueryFormat("svg");
 
 $magick->Read("t/img/twopages.pdf");
 my $PDFS_WORK = defined $magick->Get("width");
@@ -44,24 +44,27 @@ my $PDFS_WORK = defined $magick->Get("width");
 ok(! system("rm -rf t/tmp; mkdir -p t/tmp/in"));
 
 ok(! system("cp t/img/redsquare.png t/tmp/in/redsquare.png"));
+ok(! system("cp t/img/redsquare.jpg t/tmp/in/redsquare.jpg"));
+ok(! system("cp t/img/redsquare.jpg t/tmp/in/redsquare.jpeg"));
+ok(! system("cp t/img/redsquare.jpg t/tmp/in/SHOUTY.JPG"));
 # colons in filenames are a corner case for img
 ok(! system("cp t/img/redsquare.png t/tmp/in/hello:world.png"));
 ok(! system("cp t/img/redsquare.png t/tmp/in/a:b:c.png"));
 ok(! system("cp t/img/redsquare.png t/tmp/in/a:b:c:d.png"));
 ok(! system("cp t/img/redsquare.png t/tmp/in/a:b:c:d:e:f:g:h:i:j.png"));
 
-if ($SVGS_WORK) {
-	writefile("bluesquare.svg", "t/tmp/in",
-		'<svg width="30" height="30"><rect x="0" y="0" width="30" height="30" fill="blue"/></svg>');
-}
+writefile("bluesquare.svg", "t/tmp/in",
+	'<svg width="30" height="30"><rect x="0" y="0" width="30" height="30" fill="blue"/></svg>');
+ok(! system("cp t/tmp/in/bluesquare.svg t/tmp/in/really-svg.png"));
+ok(! system("cp t/tmp/in/bluesquare.svg t/tmp/in/really-svg.bmp"));
+ok(! system("cp t/tmp/in/bluesquare.svg t/tmp/in/really-svg.pdf"));
 
 # using different image sizes for different pages, so the pagenumber selection can be tested easily
 ok(! system("cp t/img/twopages.pdf t/tmp/in/twopages.pdf"));
-
-my $maybe_svg_img = "";
-if ($SVGS_WORK) {
-	$maybe_svg_img = "[[!img bluesquare.svg size=10x]]";
-}
+ok(! system("cp t/img/twopages.pdf t/tmp/in/really-pdf.JPEG"));
+ok(! system("cp t/img/twopages.pdf t/tmp/in/really-pdf.jpg"));
+ok(! system("cp t/img/twopages.pdf t/tmp/in/really-pdf.png"));
+ok(! system("cp t/img/twopages.pdf t/tmp/in/really-pdf.svg"));
 
 my $maybe_pdf_img = "";
 if ($PDFS_WORK) {
@@ -73,18 +76,32 @@ EOF
 
 writefile("imgconversions.mdwn", "t/tmp/in", <<EOF
 [[!img redsquare.png]]
+[[!img redsquare.jpg size=11x]]
+[[!img redsquare.jpeg size=12x]]
+[[!img SHOUTY.JPG size=13x]]
 [[!img redsquare.png size=10x]]
 [[!img redsquare.png size=30x50]] expecting 30x30
 [[!img hello:world.png size=x8]] expecting 8x8
 [[!img a:b:c.png size=x4]]
 [[!img a:b:c:d:e:f:g:h:i:j.png size=x6]]
-$maybe_svg_img
+[[!img bluesquare.svg size=42x]] expecting 42x
+[[!img bluesquare.svg size=x43]] expecting x43
+[[!img bluesquare.svg size=42x43]] expecting 42x43 because aspect ratio not preserved
 $maybe_pdf_img
+
+# bad ideas
+[[!img really-svg.png size=666x]]
+[[!img really-svg.bmp size=666x]]
+[[!img really-svg.pdf size=666x]]
+[[!img really-pdf.JPEG size=666x]]
+[[!img really-pdf.jpg size=666x]]
+[[!img really-pdf.png size=666x]]
+[[!img really-pdf.svg size=666x]]
 EOF
 );
 ok(utime(333333333, 333333333, "t/tmp/in/imgconversions.mdwn"));
 
-ok(! system(@command));
+ok(! system(@command, '--set-yaml', 'img_allowed_formats=[JPEG, PNG, svg, pdf]'));
 
 sub size($) {
 	my $filename = shift;
@@ -102,13 +119,9 @@ my $outhtml = readfile("$outpath.html");
 is(size("$outpath/10x-redsquare.png"), "10x10");
 ok(! -e "$outpath/30x-redsquare.png");
 ok($outhtml =~ /width="30" height="30".*expecting 30x30/);
-
-SKIP: {
-	skip "SVG support not installed (try libmagickcore-extra)", 1
-		unless $SVGS_WORK;
-	# if this fails, you need libmagickcore-6.q16-2-extra installed
-	is(size("$outpath/10x-bluesquare.png"), "10x10");
-}
+ok($outhtml =~ /width="42".*expecting 42x/);
+ok($outhtml =~ /height="43".*expecting x43/);
+ok($outhtml =~ /width="42" height="43".*expecting 42x43/);
 
 SKIP: {
 	skip "PDF support not installed (try ghostscript)", 2
@@ -122,6 +135,32 @@ is(size("$outpath/x8-hello:world.png"), "8x8");
 is(size("$outpath/x4-a:b:c.png"), "4x4");
 is(size("$outpath/x6-a:b:c:d:e:f:g:h:i:j.png"), "6x6");
 
+is(size("$outpath/11x-redsquare.jpg"), "11x11");
+is(size("$outpath/12x-redsquare.jpeg"), "12x12");
+is(size("$outpath/13x-SHOUTY.JPG"), "13x13");
+like($outhtml, qr{src="(\./)?imgconversions/11x-redsquare\.jpg" width="11" height="11"});
+like($outhtml, qr{src="(\./)?imgconversions/12x-redsquare\.jpeg" width="12" height="12"});
+like($outhtml, qr{src="(\./)?imgconversions/13x-SHOUTY\.JPG" width="13" height="13"});
+
+# We do not misinterpret images
+my $quot = qr/(?:"|&quot;)/;
+like($outhtml, qr/${quot}really-svg\.png${quot} does not seem to be a valid png file/);
+ok(! -e "$outpath/666x-really-svg.png");
+ok(! -e "$outpath/666x-really-svg.bmp");
+like($outhtml, qr/${quot}really-pdf\.JPEG${quot} does not seem to be a valid jpeg file/);
+ok(! -e "$outpath/666x-really-pdf.jpeg");
+ok(! -e "$outpath/666x-really-pdf.JPEG");
+like($outhtml, qr/${quot}really-pdf\.jpg${quot} does not seem to be a valid jpeg file/);
+ok(! -e "$outpath/666x-really-pdf.jpg");
+like($outhtml, qr/${quot}really-pdf\.png${quot} does not seem to be a valid png file/);
+ok(! -e "$outpath/666x-really-pdf.png");
+
+# disable support for uncommon formats and try again
+ok(! system(@command, "--rebuild"));
+ok(! -e "$outpath/10x-bluesquare.png");
+ok(! -e "$outpath/12x-twopages.png");
+ok(! -e "$outpath/16x-p1-twopages.png");
+
 # now let's remove them again
 
 if (1) { # for easier testing
@@ -132,6 +171,7 @@ if (1) { # for easier testing
 	ok(! -e "$outpath/10x-redsquare.png");
 	ok(! -e "$outpath/10x-bluesquare.png");
 	ok(! -e "$outpath/12x-twopages.png");
+	ok(! -e "$outpath/13x-SHOUTY.JPG");
 	ok(! -e "$outpath/16x-p1-twopages.png");
 	ok(! -e "$outpath/x8-hello:world.png");
 	ok(! -e "$outpath/x4-a:b:c.png");

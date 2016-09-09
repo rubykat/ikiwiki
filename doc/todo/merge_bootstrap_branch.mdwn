@@ -1,0 +1,31 @@
+I've prepared a bootstrap branch based on
+<https://github.com/gsliepen/ikistrap>. 
+
+Main impediment to merging it is jquery; bootstrap probably needs
+a newer version than the 1.6.2 included in ikiwiki and upgrading
+it would need testing the parts of ikiwiki that use jquery.
+
+It also needs to include bootstrap 4 in ikiwiki, rather than pulling
+it from the CDN, probably. Although depending on a debian package
+would be nicer, if bootstrap 4 got packaged in Debian.
+
+Note that the template changes are not entirely optimial, but I
+did them in a way that makes the diff pretty clear that nothing changes
+except when the bootstrap theme is enabled.
+
+--[[Joey]]
+
+> [bootstrap3 is in debian](https://tracker.debian.org/pkg/twitter-bootstrap3).
+> As far as I know, there is no effort to package b4 just yet,
+> maybe a RFP?
+>
+> My work on bootstrap also involved some changes to the base templates,
+> not sure there is a way to work around that. --[[anarcat]]
+
+>> As for not tampering with template files, the only way I found to
+>> work around this is to rename the desired bootstrap classes to the
+>> ones that the default ikiwiki template wants (toc, map, etc.).
+>> What this means is copying css code from `bootstrap.css` to the `styles.css`.
+>> [See for yourself](https://notabug.org/iikb/ikiwiki-theme-bootstrap/commit/7f30630b6255336a34b14f70f2a674e15cd797a0) - don't mind the red parts.
+>> This is tedious and boring, it's easier to tamper with template files
+>> than to rewrite bootstrap by copying and pasting it. --[[desci]]

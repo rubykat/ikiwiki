@@ -469,7 +469,7 @@ sub git_commit_info ($;$) {
 
 	my @raw_lines = run_or_die('git', 'log', @opts,
 		'--pretty=raw', '--raw', '--abbrev=40', '--always', '-c',
-		'-r', $sha1, '--', '.');
+		'-r', $sha1, '--no-renames', '--', '.');
 
 	my @ci;
 	while (my $parsed = parse_diff_tree(\@raw_lines)) {
@@ -654,7 +654,7 @@ sub rcs_add ($) {
 
 	ensure_committer();
 
-	run_or_cry('git', 'add', $file);
+	run_or_cry('git', 'add', '--', $file);
 }
 
 sub rcs_remove ($) {
@@ -664,7 +664,7 @@ sub rcs_remove ($) {
 
 	ensure_committer();
 
-	run_or_cry('git', 'rm', '-f', $file);
+	run_or_cry('git', 'rm', '-f', '--', $file);
 }
 
 sub rcs_rename ($$) {
@@ -672,7 +672,7 @@ sub rcs_rename ($$) {
 
 	ensure_committer();
 
-	run_or_cry('git', 'mv', '-f', $src, $dest);
+	run_or_cry('git', 'mv', '-f', '--', $src, $dest);
 }
 
 sub rcs_recentchanges ($) {

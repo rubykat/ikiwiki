@@ -1,10 +1,68 @@
-ikiwiki (3.20160122) UNRELEASED; urgency=medium
+ikiwiki (3.20160905) unstable; urgency=medium
+
+  [ Joey Hess ]
+  * Fix installation when prefix includes a string metacharacter.
+    Thanks, Sam Hathaway.
 
   [ Simon McVittie ]
+  * Use git log --no-renames to generate recentchanges, fixing the git
+    test-case with git 2.9 (Closes: #835612)
+
+ -- Simon McVittie <smcv@debian.org>  Mon, 05 Sep 2016 21:26:19 +0100
+
+ikiwiki (3.20160728) unstable; urgency=medium
+
+  * Explicitly remove current working directory from Perl's library
+    search path, mitigating CVE-2016-1238 (see #588017)
+  * wrappers: allocate new environment dynamically, so we won't overrun
+    the array if third-party plugins add multiple environment variables.
+  * Standards-Version: 3.9.8 (no changes required)
+
+ -- Simon McVittie <smcv@debian.org>  Thu, 28 Jul 2016 10:41:56 +0100
+
+ikiwiki (3.20160509) unstable; urgency=high
+
+  [ Amitai Schlair ]
+  * img: ignore the case of the extension when detecting image format,
+    fixing the regression that *.JPG etc. would not be displayed
+    since 3.20160506
+
+  [ Simon McVittie ]
+  * img: parse img_allowed_formats case-insensitively, as was done in
+    3.20141016.3
+  * inline: restore backwards compat for show=-1 syntax, which
+    worked before 3.20160121
+  * Remove a spurious changelog entry from 3.20160506 (the relevant
+    change was already in 3.20150614)
+  * Add CVE-2016-4561 reference to 3.20160506 changelog
+  * Set high urgency to get the CVE-2016-4561 fix and CVE-2016-3714
+    mitigation into testing
+
+ -- Simon McVittie <smcv@debian.org>  Mon, 09 May 2016 21:57:09 +0100
+
+ikiwiki (3.20160506) unstable; urgency=medium
+
+  [ Simon McVittie ]
+  * HTML-escape error messages, in one case avoiding potential cross-site
+    scripting (CVE-2016-4561, OVE-20160505-0012)
+  * Mitigate ImageMagick vulnerabilities such as CVE-2016-3714:
+    - img: force common Web formats to be interpreted according to extension,
+      so that "allowed_attachments: '*.jpg'" does what one might expect
+    - img: restrict to JPEG, PNG and GIF images by default, again mitigating
+      CVE-2016-3714 and similar vulnerabilities
+    - img: check that the magic number matches what we would expect from
+      the extension before giving common formats to ImageMagick
   * d/control: use https for Homepage
   * d/control: add Vcs-Browser
 
   [ Joey Hess ]
+  * img: Add back support for SVG images, bypassing ImageMagick and
+    simply passing the SVG through to the browser, which is supported by all
+    commonly used browsers these days.
+    SVG scaling by img directives has subtly changed; where before
+    size=wxh would preserve aspect ratio, this cannot be done when passing
+    them through and so specifying both a width and height can change
+    the SVG's aspect ratio.
   * loginselector: When only openid and emailauth are enabled, but
     passwordauth is not, avoid showing a "Other" box which opens an
     empty form.
@@ -12,7 +70,10 @@ ikiwiki (3.20160122) UNRELEASED; urgency=medium
   [ Amitai Schlair ]
   * mdwn: Process .md like .mdwn, but disallow web creation.
 
- -- Simon McVittie <smcv@debian.org>  Thu, 21 Jan 2016 22:34:04 +0000
+  [ Florian Wagner ]
+  * git: Correctly handle filenames starting with a dash in add/rm/mv.
+
+ -- Simon McVittie <smcv@debian.org>  Fri, 06 May 2016 07:54:26 +0100
 
 ikiwiki (3.20160121) unstable; urgency=medium
 

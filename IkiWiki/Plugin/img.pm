@@ -21,6 +21,28 @@ sub getsetup () {
 			rebuild => undef,
 			section => "widget",
 		},
+		img_allowed_formats => {
+			type => "string",
+			default => [qw(jpeg png gif svg)],
+			description => "Image formats to process (jpeg, png, gif, svg, pdf or 'everything' to accept all)",
+			# ImageMagick has had arbitrary code execution flaws,
+			# and the whole delegates mechanism is scary from
+			# that perspective
+			safe => 0,
+			rebuild => 0,
+		},
+}
+
+sub allowed {
+	my $format = shift;
+	my $allowed = $config{img_allowed_formats};
+	$allowed = ['jpeg', 'png', 'gif', 'svg'] unless defined $allowed && @$allowed;
+
+	foreach my $a (@$allowed) {
+		return 1 if lc($a) eq $format || lc($a) eq 'everything';
+	}
+
+	return 0;
 }
 
 sub preprocess (@) {
@@ -64,97 +86,168 @@ sub preprocess (@) {
 
 	my $dir = $params{page};
 	my $base = IkiWiki::basename($file);
-	my $issvg = $base=~s/\.svg$/.png/i;
+	my $extension;
+	my $format;
+
+	if ($base =~ m/\.([a-z0-9]+)$/is) {
+		$extension = $1;
+	}
+	else {
+		error gettext("Unable to detect image type from extension");
+	}
+
+	# Never interpret well-known file extensions as any other format,
+	# in case the wiki configuration unwisely allows attaching
+	# arbitrary files named *.jpg, etc.
+	my $magic;
+	my $offset = 0;
+	open(my $in, '<', $srcfile) or error sprintf(gettext("failed to read %s: %s"), $file, $!);
+	binmode($in);
+
+	if ($extension =~ m/^(jpeg|jpg)$/is) {
+		$format = 'jpeg';
+		$magic = "\377\330\377";
+	}
+	elsif ($extension =~ m/^(png)$/is) {
+		$format = 'png';
+		$magic = "\211PNG\r\n\032\n";
+	}
+	elsif ($extension =~ m/^(gif)$/is) {
+		$format = 'gif';
+		$magic = "GIF8";
+	}
+	elsif ($extension =~ m/^(svg)$/is) {
+		$format = 'svg';
+	}
+	elsif ($extension =~ m/^(pdf)$/is) {
+		$format = 'pdf';
+		$magic = "%PDF-";
+	}
+	else {
+		# allow ImageMagick to auto-detect (potentially dangerous)
+		$format = '';
+	}
+
+	error sprintf(gettext("%s image processing disabled in img_allowed_formats configuration"), $format ? $format : "\"$extension\"") unless allowed($format ? $format : "everything");
+
+	# Try harder to protect ImageMagick from itself
+	if (defined $magic) {
+		my $content;
+		read($in, $content, length $magic) or error sprintf(gettext("failed to read %s: %s"), $file, $!);
+		if ($magic ne $content) {
+			error sprintf(gettext("\"%s\" does not seem to be a valid %s file"), $file, $format);
+		}
+	}
+
 	my $ispdf = $base=~s/\.pdf$/.png/i;
 	my $pagenumber = exists($params{pagenumber}) ? int($params{pagenumber}) : 0;
 	if ($pagenumber != 0) {
 		$base = "p$pagenumber-$base";
 	}
 
-	eval q{use Image::Magick};
-	error gettext("Image::Magick is not installed") if $@;
-	my $im = Image::Magick->new();
 	my $imglink;
 	my $imgdatalink;
-	my $r = $im->Read(":$srcfile\[$pagenumber]");
-	error sprintf(gettext("failed to read %s: %s"), $file, $r) if $r;
-
-	if (! defined $im->Get("width") || ! defined $im->Get("height")) {
-		error sprintf(gettext("failed to get dimensions of %s"), $file);
-	}
-
 	my ($dwidth, $dheight);
         my $flag = '';
 
-	if ($params{size} eq 'full') {
-		$dwidth = $im->Get("width");
-		$dheight = $im->Get("height");
-	} else {
-		my ($w, $h, $f) = ($params{size} =~ /^(\d*)x(\d*)(.?)$/);
-		error sprintf(gettext('wrong size format "%s" (should be WxH)'), $params{size})
-			unless (defined $w && defined $h &&
-			        (length $w || length $h));
-
-                $flag = $f;
-		if ($im->Get("width") == 0 || $im->Get("height") == 0) {
-			($dwidth, $dheight)=(0, 0);
-		} elsif (! length $w || (length $h && $im->Get("height")*$w > $h * $im->Get("width"))) {
-			# using height because only height is given or ...
-			# because original image is more portrait than $w/$h
-			# ... slimness of $im > $h/w
-			# ... $im->Get("height")/$im->Get("width") > $h/$w
-			# ... $im->Get("height")*$w > $h * $im->Get("width")
-
-			$dheight=$h;
-			$dwidth=$h / $im->Get("height") * $im->Get("width");
-		} else { # (! length $h) or $w is what determines the resized size
-			$dwidth=$w;
-			$dheight=$w / $im->Get("width") * $im->Get("height");
-		}
+	my ($w, $h, $f);
+	if ($params{size} ne 'full') {
+		($w, $h, $f) = ($params{size} =~ /^(\d*)x(\d*)(.?)$/);
 	}
 
-	if ($dwidth < $im->Get("width") || $ispdf) {
-		# resize down, or resize to pixels at all
+	if ($format eq 'svg') {
+		# svg images are not scaled using ImageMagick because the
+		# pipeline is complex. Instead, the image size is simply
+		# set to the provided values.
+		#
+		# Aspect ratio will be preserved automatically when
+		# only a width or only a height is specified.
+		# When both are specified, aspect ratio will not be
+		# preserved.
+		$imglink = $file;
+		$dwidth = $w if length $w;
+		$dheight = $h if length $h;
+	}
+	else {
+		eval q{use Image::Magick};
+		error gettext("Image::Magick is not installed") if $@;
+		my $im = Image::Magick->new();
+		my $r = $im->Read("$format:$srcfile\[$pagenumber]");
+		error sprintf(gettext("failed to read %s: %s"), $file, $r) if $r;
 
-		my $outfile = "$config{destdir}/$dir/$params{size}-$base";
-		$imglink = "$dir/$params{size}-$base";
-
-		will_render($params{page}, $imglink);
-
-		if (-e $outfile && (-M $srcfile >= -M $outfile)) {
-			$im = Image::Magick->new;
-			$r = $im->Read($outfile);
-			error sprintf(gettext("failed to read %s: %s"), $outfile, $r) if $r;
+		if (! defined $im->Get("width") || ! defined $im->Get("height")) {
+			error sprintf(gettext("failed to get dimensions of %s"), $file);
 		}
-		else {
-			$r = $im->Resize(geometry => "${dwidth}x${dheight}${flag}");
-			error sprintf(gettext("failed to resize: %s"), $r) if $r;
 
-			$im->set(($issvg || $ispdf) ? (magick => 'png') : ());
-			my @blob = $im->ImageToBlob();
-			# don't actually write resized file in preview mode;
-			# rely on width and height settings
-			if (! $params{preview}) {
-				writefile($imglink, $config{destdir}, $blob[0], 1);
+		if (! length $w && ! length $h) {
+			$dwidth = $im->Get("width");
+			$dheight = $im->Get("height");
+		} else {
+			error sprintf(gettext('wrong size format "%s" (should be WxH)'), $params{size})
+				unless (defined $w && defined $h &&
+				        (length $w || length $h));
+
+                        $flag = $f;
+			if ($im->Get("width") == 0 || $im->Get("height") == 0) {
+				($dwidth, $dheight)=(0, 0);
+			} elsif (! length $w || (length $h && $im->Get("height")*$w > $h * $im->Get("width"))) {
+				# using height because only height is given or ...
+				# because original image is more portrait than $w/$h
+				# ... slimness of $im > $h/w
+				# ... $im->Get("height")/$im->Get("width") > $h/$w
+				# ... $im->Get("height")*$w > $h * $im->Get("width")
+
+				$dheight=$h;
+				$dwidth=$h / $im->Get("height") * $im->Get("width");
+			} else { # (! length $h) or $w is what determines the resized size
+				$dwidth=$w;
+				$dheight=$w / $im->Get("width") * $im->Get("height");
+			}
+		}
+
+		if ($dwidth < $im->Get("width") || $ispdf) {
+			# resize down, or resize to pixels at all
+
+			my $outfile = "$config{destdir}/$dir/$params{size}-$base";
+			$imglink = "$dir/$params{size}-$base";
+
+			will_render($params{page}, $imglink);
+
+			if (-e $outfile && (-M $srcfile >= -M $outfile)) {
+				$im = Image::Magick->new;
+				$r = $im->Read($outfile);
+				error sprintf(gettext("failed to read %s: %s"), $outfile, $r) if $r;
 			}
 			else {
-				eval q{use MIME::Base64};
-				error($@) if $@;
-				$imgdatalink = "data:image/".$im->Get("magick").";base64,".encode_base64($blob[0]);
+			        $r = $im->Resize(geometry => "${dwidth}x${dheight}${flag}");
+				error sprintf(gettext("failed to resize: %s"), $r) if $r;
+
+				$im->set($ispdf ? (magick => 'png') : ());
+				my @blob = $im->ImageToBlob();
+				# don't actually write resized file in preview mode;
+				# rely on width and height settings
+				if (! $params{preview}) {
+					writefile($imglink, $config{destdir}, $blob[0], 1);
+				}
+				else {
+					eval q{use MIME::Base64};
+					error($@) if $@;
+					$imgdatalink = "data:image/".$im->Get("magick").";base64,".encode_base64($blob[0]);
+				}
 			}
+
+			# always get the true size of the resized image (it could be
+			# that imagemagick did its calculations differently)
+			$dwidth  = $im->Get("width");
+			$dheight = $im->Get("height");
+		} else {
+			$imglink = $file;
 		}
 
-		# always get the true size of the resized image (it could be
-		# that imagemagick did its calculations differently)
-		$dwidth  = $im->Get("width");
-		$dheight = $im->Get("height");
-	} else {
-		$imglink = $file;
-	}
-	
-	if (! defined($dwidth) || ! defined($dheight)) {
-		error sprintf(gettext("failed to determine size of image %s"), $file)
-	}
+		if (! defined($dwidth) || ! defined($dheight)) {
+			error sprintf(gettext("failed to determine size of image %s"), $file)
+		}
+	} # not SVG
 
 	my ($fileurl, $imgurl);
 	my $urltobase = $params{preview} ? undef : $params{destpage};
@@ -172,10 +265,10 @@ sub preprocess (@) {
 		}
 	}
 	
-	my $imgtag='<img src="'.$imgurl.
-		'" width="'.$dwidth.
-		'" height="'.$dheight.'"'.
-		$attrs.
+	my $imgtag='<img src="'.$imgurl.'"';
+	$imgtag.=' width="'.$dwidth.'"' if defined $dwidth;
+	$imgtag.=' height="'.$dheight.'"' if defined $dheight;
+	$imgtag.= $attrs.
 		(exists $params{align} && ! exists $params{caption} ? ' align="'.$params{align}.'"' : '').
 		' />';
 
@@ -214,4 +307,5 @@ sub preprocess (@) {
 		return $imgtag;
 	}
 }
+
 1
