@@ -371,6 +371,7 @@ sub find_src_files (;$$$) {
 			find({
 				no_chdir => 1,
 				follow => $config{follow_underlay},
+                                follow_skip => ($config{follow_underlay} ? 2 : 1),
 				wanted => $helper,
 			}, '.');
 			chdir($origdir) || die "chdir: $!";
